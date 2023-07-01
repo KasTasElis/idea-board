@@ -1,11 +1,9 @@
 import { Card } from ".";
+import { TIdea } from "./IdeaCard";
 
 interface IdeaFormProps {
   onCancel: () => void;
-  idea?: {
-    title: string;
-    description: string;
-  };
+  idea?: TIdea;
 }
 
 const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, idea }) => {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IdeaForm, IdeaCard, SortOptions } from "./components";
+import { IdeaForm, IdeaCard, SortOptions, TIdea } from "./components";
 
 const AddNewIdea = () => {
   const [showForm, setShowForm] = useState(false);
@@ -23,6 +23,25 @@ const AddNewIdea = () => {
   );
 };
 
+// Whats my global state?
+const ideas: { [key: string]: TIdea } = {
+  "123": {
+    id: "123",
+    title: "Idea title",
+    description:
+      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore doloremque, dignissimos modi maiores numquam quidem quo odit? Non ipsum temporibus magnam sapiente! Quo ipsam illum dolor aliquid. Voluptas, atque porro?",
+    createdAt: 12345,
+  },
+  "321": {
+    id: "321",
+    title: "Idea title 2",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde qui architecto, fugit hic aliquid molestias adipisci, dolorem officiis aliquam temporibus labore, numquam sit voluptatem debitis provident deserunt ipsa beatae expedita.",
+    createdAt: 12477,
+    updatedAt: 12477,
+  },
+};
+
 const App = () => {
   return (
     <div className="p-3">
@@ -43,13 +62,11 @@ const App = () => {
           <SortOptions />
         </div>
 
-        <div>
-          {[1, 2, 3].map(() => (
-            <div className="mb-5">
-              <IdeaCard />
-            </div>
-          ))}
-        </div>
+        {Object.keys(ideas).map((key) => (
+          <div className="mb-5" key={key}>
+            <IdeaCard idea={ideas[key]} />
+          </div>
+        ))}
       </div>
     </div>
   );

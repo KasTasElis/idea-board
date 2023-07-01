@@ -1,14 +1,42 @@
 import { useState } from "react";
 import { IdeaForm, Card } from ".";
 
-const IdeaCard: React.FC = () => {
-  const [isEditing, setIsEditing] = useState(false);
+type TIdea = {
+  title: string;
+  description: string;
+  id: string;
+  createdAt: number;
+  updatedAt?: number;
+};
+interface IdeaCardProps {
+  idea: TIdea;
+}
 
-  const idea = {
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    description:
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam architecto ducimus vitae suscipit incidunt doloremque obcaecati pariatur hic quam eligendi nulla quae quis, asperiores cum? Eos placeat labore culpa veniam.",
-  };
+const timeStampToDate = (timeStamp: number) => {
+  const date = new Date(timeStamp);
+  return date.toLocaleDateString("en-UK", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+const CreatedOrUpdatedAt = ({ idea }: { idea: TIdea }) => {
+  const relevantTimeStamp = idea.updatedAt || idea.createdAt;
+  const relevantWord = idea.updatedAt ? "✍️ Updated" : "💡 Created";
+  const timeStamp = timeStampToDate(relevantTimeStamp);
+
+  return (
+    <p className="text-sm text-slate-500 font-light">
+      {`${relevantWord} @ ${timeStamp}`}
+    </p>
+  );
+};
+
+const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
+  const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
     return <IdeaForm onCancel={() => setIsEditing(false)} idea={idea} />;
@@ -16,20 +44,11 @@ const IdeaCard: React.FC = () => {
 
   return (
     <Card>
-      <h3 className="text-xl font-bold mb-3 text-teal-900">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      </h3>
-      <p className="mb-5 text-slate-700">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto impedit
-        sint veritatis. Lorem ipsum, dolor sit amet consectetur adipisicing
-        elit. Ut enim sint officiis in deserunt commodi veniam delectus nemo
-        blanditiis ipsa, doloribus, corporis vel quidem sed. Ad soluta rem nemo
-        vero?
-      </p>
+      <h3 className="text-xl font-bold mb-3 text-teal-900">{idea.title}</h3>
+      <p className="mb-5 text-slate-700">{idea.description}</p>
+
       <div className="flex items-center justify-between">
-        <p className="text-sm text-slate-500 font-light">
-          🕒 Created 15h 12m ago...
-        </p>
+        <CreatedOrUpdatedAt idea={idea} />
 
         <div className="flex gap-3">
           <button
@@ -48,3 +67,4 @@ const IdeaCard: React.FC = () => {
 };
 
 export { IdeaCard };
+export type { TIdea };
