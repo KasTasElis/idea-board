@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IdeaForm, Card } from ".";
-import { useGlobalState } from "../App";
+import { EActionTypes, useGlobalState } from "../App";
 
 type TIdea = {
   title: string;
@@ -37,17 +37,25 @@ const CreatedOrUpdatedAt = ({ idea }: { idea: TIdea }) => {
 };
 
 const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
-  const { setState, state } = useGlobalState();
+  const { dispatch } = useGlobalState();
 
   const onDelete = () => {
-    const { [idea.id]: _, ...restOfIdeas } = state.ideas;
-    setState({ ideas: restOfIdeas });
+    dispatch({
+      type: EActionTypes.DELETE_IDEA,
+      payload: idea,
+    });
   };
 
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
-    return <IdeaForm onCancel={() => setIsEditing(false)} idea={idea} />;
+    return (
+      <IdeaForm
+        onCancel={() => setIsEditing(false)}
+        onSubmit={() => setIsEditing(false)}
+        idea={idea}
+      />
+    );
   }
 
   return (

@@ -5,7 +5,12 @@ const AddNewIdea = () => {
   const [showForm, setShowForm] = useState(false);
 
   if (showForm) {
-    return <IdeaForm onCancel={() => setShowForm(false)} />;
+    return (
+      <IdeaForm
+        onCancel={() => setShowForm(false)}
+        onSubmit={() => setShowForm(false)}
+      />
+    );
   }
 
   return (

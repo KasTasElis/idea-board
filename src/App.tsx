@@ -1,16 +1,17 @@
-import { createContext, useContext, useState } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useReducer } from "react";
 import { AddNewIdea, IdeaCard, SortOptions, TIdea } from "./components";
 
 // Whats my global state?
-const ideas: { [key: string]: TIdea } = {
-  "123": {
+const ideas: TIdea[] = [
+  {
     id: "123",
     title: "Idea title",
     description:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore doloremque, dignissimos modi maiores numquam quidem quo odit? Non ipsum temporibus magnam sapiente! Quo ipsam illum dolor aliquid. Voluptas, atque porro?",
     createdAt: 12345,
   },
-  "321": {
+  {
     id: "321",
     title: "Idea title 2",
     description:
@@ -18,34 +19,59 @@ const ideas: { [key: string]: TIdea } = {
     createdAt: 12477,
     updatedAt: 12477,
   },
-};
+];
 
 type TGlobalState = {
-  ideas: { [key: string]: TIdea };
+  ideas: TIdea[];
 };
 
 type TContext = {
   state: TGlobalState;
-  setState: (state: TGlobalState) => void;
+  dispatch: React.Dispatch<TAction>;
 };
 
 const initialContext: TContext = {
   state: {
-    ideas: {},
+    ideas: [],
   },
-  setState: () => undefined,
+  dispatch: () => undefined,
 };
 
 const GlobalState = createContext(initialContext);
 
 const initialState: TGlobalState = {
-  ideas: ideas,
+  ideas,
 };
 
 export const useGlobalState = () => useContext(GlobalState);
 
+export enum EActionTypes {
+  ADD_IDEA = "ADD_IDEA",
+  DELETE_IDEA = "DELETE_IDEA",
+  UPDATE_IDEA = "UPDATE_IDEA",
+}
+
+type TAction = {
+  type: EActionTypes;
+  payload: TIdea;
+};
+
+const reducer = (state: TGlobalState, action: TAction) => {
+  switch (action.type) {
+    case EActionTypes.ADD_IDEA:
+      return { ...state, ideas: [action.payload, ...state.ideas] };
+    case EActionTypes.DELETE_IDEA:
+      return {
+        ...state,
+        ideas: state.ideas.filter((idea) => idea.id !== action.payload.id),
+      };
+    default:
+      return state;
+  }
+};
+
 const App = () => {
-  const [state, setState] = useState(initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <div className="p-3">
@@ -57,8 +83,7 @@ const App = () => {
           </h1>
         </div>
 
-        <GlobalState.Provider value={{ state, setState }}>
-          {/* New Idea Section */}
+        <GlobalState.Provider value={{ state, dispatch }}>
           <div className="mb-16">
             <AddNewIdea />
           </div>
@@ -67,9 +92,9 @@ const App = () => {
             <SortOptions />
           </div>
 
-          {Object.keys(ideas).map((key) => (
-            <div className="mb-5" key={key}>
-              <IdeaCard idea={ideas[key]} />
+          {state.ideas.map((idea) => (
+            <div className="mb-5" key={idea.id}>
+              <IdeaCard idea={idea} />
             </div>
           ))}
         </GlobalState.Provider>

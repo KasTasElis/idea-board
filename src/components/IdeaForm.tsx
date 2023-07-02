@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Card } from ".";
 import { TIdea } from "./IdeaCard";
+import { EActionTypes, useGlobalState } from "../App";
 
 interface IdeaFormProps {
   onCancel: () => void;
+  onSubmit: () => void;
   idea?: TIdea;
 }
 
@@ -12,10 +14,11 @@ const titleMinLength = 3;
 const descriptionMaxLength = 160;
 const descriptionMinLength = 3;
 
-const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, idea }) => {
+const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, onSubmit, idea }) => {
   const initialTitle = idea ? idea.title : "";
   const initialTitlePlaceholder = idea ? idea.title : "Enter Title...";
   const [title, setTitle] = useState(initialTitle);
+  const { dispatch } = useGlobalState();
 
   const initialDescription = idea ? idea.description : "";
   const initialDescriptionPlaceholder = idea
@@ -23,10 +26,25 @@ const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, idea }) => {
     : "Enter Description...";
   const [description, setDescrition] = useState(initialDescription);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("submit", e, { title, description });
+    // create the idea
+    const newIdea: TIdea = {
+      id: String(Date.now()),
+      title,
+      description,
+      createdAt: Date.now(),
+    };
+
+    console.log({ newIdea });
+
+    dispatch({
+      type: EActionTypes.ADD_IDEA,
+      payload: newIdea,
+    });
+
+    onSubmit();
   };
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +69,7 @@ const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, idea }) => {
 
   return (
     <Card>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <div className="flex items-center justify-between">
             <label htmlFor="" className="font-medium text-slate-700 block mb-1">
