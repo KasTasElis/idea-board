@@ -88,15 +88,18 @@ const App = () => {
             <AddNewIdea />
           </div>
 
-          <div className="mb-5">
-            <SortOptions />
-          </div>
-
-          {state.ideas.map((idea) => (
-            <div className="mb-5" key={idea.id}>
-              <IdeaCard idea={idea} />
-            </div>
-          ))}
+          {state.ideas.length ? (
+            <>
+              <div className="mb-5">
+                <SortOptions />
+              </div>
+              {state.ideas.map((idea) => (
+                <div className="mb-5" key={idea.id}>
+                  <IdeaCard idea={idea} />
+                </div>
+              ))}
+            </>
+          ) : null}
         </GlobalState.Provider>
       </div>
     </div>
