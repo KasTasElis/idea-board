@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IdeaForm, Card } from ".";
+import { useGlobalState } from "../App";
 
 type TIdea = {
   title: string;
@@ -36,6 +37,13 @@ const CreatedOrUpdatedAt = ({ idea }: { idea: TIdea }) => {
 };
 
 const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
+  const { setState, state } = useGlobalState();
+
+  const onDelete = () => {
+    const { [idea.id]: _, ...restOfIdeas } = state.ideas;
+    setState({ ideas: restOfIdeas });
+  };
+
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
@@ -57,7 +65,10 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
           >
             Edit
           </button>
-          <button className="px-4 py-2 bg-red-500 rounded-md text-white text-sm font-medium">
+          <button
+            onClick={onDelete}
+            className="px-4 py-2 bg-red-500 rounded-md text-white text-sm font-medium"
+          >
             Delete
           </button>
         </div>

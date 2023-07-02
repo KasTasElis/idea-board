@@ -1,27 +1,5 @@
-import { useState } from "react";
-import { IdeaForm, IdeaCard, SortOptions, TIdea } from "./components";
-
-const AddNewIdea = () => {
-  const [showForm, setShowForm] = useState(false);
-
-  if (showForm) {
-    return <IdeaForm onCancel={() => setShowForm(false)} />;
-  }
-
-  return (
-    <div className="text-center">
-      <h3 className="text-center text-lg mb-3 font-medium text-slate-400">
-        Got something on your mind?
-      </h3>
-      <button
-        onClick={() => setShowForm(true)}
-        className="py-2 px-3 bg-slate-200 rounded-md text-teal-900 min-w-64 h-16 text-xl w-full max-w-sm"
-      >
-        ✍️ Add New Idea
-      </button>
-    </div>
-  );
-};
+import { createContext, useContext, useState } from "react";
+import { AddNewIdea, IdeaCard, SortOptions, TIdea } from "./components";
 
 // Whats my global state?
 const ideas: { [key: string]: TIdea } = {
@@ -42,7 +20,33 @@ const ideas: { [key: string]: TIdea } = {
   },
 };
 
+type TGlobalState = {
+  ideas: { [key: string]: TIdea };
+};
+
+type TContext = {
+  state: TGlobalState;
+  setState: (state: TGlobalState) => void;
+};
+
+const initialContext: TContext = {
+  state: {
+    ideas: {},
+  },
+  setState: () => undefined,
+};
+
+const GlobalState = createContext(initialContext);
+
+const initialState: TGlobalState = {
+  ideas: ideas,
+};
+
+export const useGlobalState = () => useContext(GlobalState);
+
 const App = () => {
+  const [state, setState] = useState(initialState);
+
   return (
     <div className="p-3">
       <div className="max-w-screen-md mx-auto">
@@ -53,20 +57,22 @@ const App = () => {
           </h1>
         </div>
 
-        {/* New Idea Section */}
-        <div className="mb-16">
-          <AddNewIdea />
-        </div>
-
-        <div className="mb-5">
-          <SortOptions />
-        </div>
-
-        {Object.keys(ideas).map((key) => (
-          <div className="mb-5" key={key}>
-            <IdeaCard idea={ideas[key]} />
+        <GlobalState.Provider value={{ state, setState }}>
+          {/* New Idea Section */}
+          <div className="mb-16">
+            <AddNewIdea />
           </div>
-        ))}
+
+          <div className="mb-5">
+            <SortOptions />
+          </div>
+
+          {Object.keys(ideas).map((key) => (
+            <div className="mb-5" key={key}>
+              <IdeaCard idea={ideas[key]} />
+            </div>
+          ))}
+        </GlobalState.Provider>
       </div>
     </div>
   );
