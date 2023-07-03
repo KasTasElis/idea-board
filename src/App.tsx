@@ -48,7 +48,7 @@ export const useGlobalState = () => useContext(GlobalState);
 export enum EActionTypes {
   ADD_IDEA = "ADD_IDEA",
   DELETE_IDEA = "DELETE_IDEA",
-  UPDATE_IDEA = "UPDATE_IDEA",
+  EDIT_IDEA = "EDIT_IDEA",
 }
 
 type TAction = {
@@ -65,7 +65,7 @@ const reducer = (state: TGlobalState, action: TAction) => {
         ...state,
         ideas: state.ideas.filter((idea) => idea.id !== action.payload.id),
       };
-    case EActionTypes.UPDATE_IDEA:
+    case EActionTypes.EDIT_IDEA:
       return {
         ...state,
         ideas: state.ideas.map((idea) => {

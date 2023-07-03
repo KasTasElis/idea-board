@@ -48,11 +48,33 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
 
   const [isEditing, setIsEditing] = useState(false);
 
+  const onEditSubmit = ({
+    title,
+    description,
+  }: {
+    title: string;
+    description: string;
+  }) => {
+    const editedIdea: TIdea = {
+      ...idea,
+      title,
+      description,
+      updatedAt: Date.now(),
+    };
+
+    dispatch({
+      type: EActionTypes.EDIT_IDEA,
+      payload: editedIdea,
+    });
+
+    setIsEditing(false);
+  };
+
   if (isEditing) {
     return (
       <IdeaForm
         onCancel={() => setIsEditing(false)}
-        onSubmit={() => setIsEditing(false)}
+        onSubmit={onEditSubmit}
         idea={idea}
       />
     );
