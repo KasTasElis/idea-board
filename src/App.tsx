@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import {
   AddNewIdea,
   IdeaCard,
@@ -12,25 +12,6 @@ export type TNotification = {
   message: string;
   id: string;
 };
-
-// Whats my global state?
-const ideas: TIdea[] = [
-  {
-    id: "123",
-    title: "Idea title",
-    description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore doloremque, dignissimos modi maiores numquam quidem quo odit? Non ipsum temporibus magnam sapiente! Quo ipsam illum dolor aliquid. Voluptas, atque porro?",
-    createdAt: 12345,
-  },
-  {
-    id: "321",
-    title: "Idea title 2",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde qui architecto, fugit hic aliquid molestias adipisci, dolorem officiis aliquam temporibus labore, numquam sit voluptatem debitis provident deserunt ipsa beatae expedita.",
-    createdAt: 12477,
-    updatedAt: 12477,
-  },
-];
 
 type TGlobalState = {
   ideas: TIdea[];
@@ -53,7 +34,7 @@ const initialContext: TContext = {
 const GlobalState = createContext(initialContext);
 
 const initialState: TGlobalState = {
-  ideas,
+  ideas: [],
   notifications: [],
 };
 
@@ -65,6 +46,7 @@ export enum EActionTypes {
   EDIT_IDEA = "EDIT_IDEA",
   SHOW_NOTIFICATION = "SHOW_NOTIFICATION",
   DELETE_NOTIFICATION = "DELETE_NOTIFICATION",
+  RESTORE_STATE_FROM_LOCAL_STORAGE = "RESTORE_STATE_FROM_LOCAL_STORAGE",
 }
 
 type TAction<T extends EActionTypes> = T extends
@@ -79,6 +61,11 @@ type TAction<T extends EActionTypes> = T extends
   ? {
       type: T;
       payload: TNotification;
+    }
+  : T extends EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE
+  ? {
+      type: T;
+      payload: TGlobalState;
     }
   : never;
 
@@ -116,6 +103,11 @@ const reducer = (state: TGlobalState, action: TAction<EActionTypes>) => {
           (notification) => notification.id !== action.payload.id
         ),
       };
+    case EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE:
+      return {
+        ...action.payload,
+        notifications: [],
+      };
     default:
       return state;
   }
@@ -123,6 +115,31 @@ const reducer = (state: TGlobalState, action: TAction<EActionTypes>) => {
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // restore state from local storage
+  useEffect(() => {
+    const localStorageName = "idea-board-state";
+
+    const localStorageState = window.localStorage.getItem(localStorageName);
+    if (localStorageState) {
+      dispatch({
+        type: EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE,
+        payload: JSON.parse(localStorageState),
+      });
+    }
+  }, []);
+
+  // save state to local storage
+  useEffect(() => {
+    const localStorageName = "idea-board-state";
+
+    const saveStateToLocalStorage = () => {
+      window.localStorage.setItem(localStorageName, JSON.stringify(state));
+    };
+
+    // Attach the beforeUnmount function to the beforeunload event
+    window.addEventListener("beforeunload", saveStateToLocalStorage);
+  }, [state]);
 
   return (
     <div className="p-3">
