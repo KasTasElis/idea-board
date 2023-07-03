@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IdeaForm, Card } from ".";
-import { EActionTypes, useGlobalState } from "../App";
+import { EActionTypes, TNotification, useGlobalState } from "../App";
 
 type TIdea = {
   title: string;
@@ -66,6 +66,23 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
       type: EActionTypes.EDIT_IDEA,
       payload: editedIdea,
     });
+
+    const notification: TNotification = {
+      id: String(Date.now()),
+      message: "Idea edited successfully!",
+    };
+
+    dispatch({
+      type: EActionTypes.SHOW_NOTIFICATION,
+      payload: notification,
+    });
+
+    setTimeout(() => {
+      dispatch({
+        type: EActionTypes.DELETE_NOTIFICATION,
+        payload: notification,
+      });
+    }, 3000);
 
     setIsEditing(false);
   };

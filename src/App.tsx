@@ -1,6 +1,17 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useReducer } from "react";
-import { AddNewIdea, IdeaCard, SortOptions, TIdea } from "./components";
+import {
+  AddNewIdea,
+  IdeaCard,
+  SortOptions,
+  TIdea,
+  Notifications,
+} from "./components";
+
+export type TNotification = {
+  message: string;
+  id: string;
+};
 
 // Whats my global state?
 const ideas: TIdea[] = [
@@ -23,16 +34,18 @@ const ideas: TIdea[] = [
 
 type TGlobalState = {
   ideas: TIdea[];
+  notifications: TNotification[];
 };
 
 type TContext = {
   state: TGlobalState;
-  dispatch: React.Dispatch<TAction>;
+  dispatch: React.Dispatch<TAction<EActionTypes>>;
 };
 
 const initialContext: TContext = {
   state: {
     ideas: [],
+    notifications: [],
   },
   dispatch: () => undefined,
 };
@@ -41,6 +54,7 @@ const GlobalState = createContext(initialContext);
 
 const initialState: TGlobalState = {
   ideas,
+  notifications: [],
 };
 
 export const useGlobalState = () => useContext(GlobalState);
@@ -49,17 +63,32 @@ export enum EActionTypes {
   ADD_IDEA = "ADD_IDEA",
   DELETE_IDEA = "DELETE_IDEA",
   EDIT_IDEA = "EDIT_IDEA",
+  SHOW_NOTIFICATION = "SHOW_NOTIFICATION",
+  DELETE_NOTIFICATION = "DELETE_NOTIFICATION",
 }
 
-type TAction = {
-  type: EActionTypes;
-  payload: TIdea;
-};
+type TAction<T extends EActionTypes> = T extends
+  | EActionTypes.ADD_IDEA
+  | EActionTypes.DELETE_IDEA
+  | EActionTypes.EDIT_IDEA
+  ? {
+      type: T;
+      payload: TIdea;
+    }
+  : T extends EActionTypes.SHOW_NOTIFICATION | EActionTypes.DELETE_NOTIFICATION
+  ? {
+      type: T;
+      payload: TNotification;
+    }
+  : never;
 
-const reducer = (state: TGlobalState, action: TAction) => {
+const reducer = (state: TGlobalState, action: TAction<EActionTypes>) => {
   switch (action.type) {
     case EActionTypes.ADD_IDEA:
-      return { ...state, ideas: [action.payload, ...state.ideas] };
+      return {
+        ...state,
+        ideas: [action.payload, ...state.ideas],
+      };
     case EActionTypes.DELETE_IDEA:
       return {
         ...state,
@@ -74,6 +103,18 @@ const reducer = (state: TGlobalState, action: TAction) => {
           }
           return idea;
         }),
+      };
+    case EActionTypes.SHOW_NOTIFICATION:
+      return {
+        ...state,
+        notifications: [...state.notifications, action.payload],
+      };
+    case EActionTypes.DELETE_NOTIFICATION:
+      return {
+        ...state,
+        notifications: state.notifications.filter(
+          (notification) => notification.id !== action.payload.id
+        ),
       };
     default:
       return state;
@@ -94,6 +135,8 @@ const App = () => {
         </div>
 
         <GlobalState.Provider value={{ state, dispatch }}>
+          <Notifications />
+
           <div className="mb-16">
             <AddNewIdea />
           </div>
@@ -103,6 +146,7 @@ const App = () => {
               <div className="mb-5">
                 <SortOptions />
               </div>
+
               {state.ideas.map((idea) => (
                 <div className="mb-5" key={idea.id}>
                   <IdeaCard idea={idea} />
