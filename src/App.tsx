@@ -65,6 +65,16 @@ const reducer = (state: TGlobalState, action: TAction) => {
         ...state,
         ideas: state.ideas.filter((idea) => idea.id !== action.payload.id),
       };
+    case EActionTypes.UPDATE_IDEA:
+      return {
+        ...state,
+        ideas: state.ideas.map((idea) => {
+          if (idea.id === action.payload.id) {
+            return action.payload;
+          }
+          return idea;
+        }),
+      };
     default:
       return state;
   }

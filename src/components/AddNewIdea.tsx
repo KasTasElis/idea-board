@@ -1,16 +1,35 @@
 import { useState } from "react";
-import { IdeaForm } from ".";
+import { IdeaForm, TIdea } from ".";
+import { EActionTypes, useGlobalState } from "../App";
 
 const AddNewIdea = () => {
   const [showForm, setShowForm] = useState(false);
+  const { dispatch } = useGlobalState();
+
+  const onSubmit = ({
+    description,
+    title,
+  }: {
+    description: string;
+    title: string;
+  }) => {
+    const newIdea: TIdea = {
+      id: String(Date.now()),
+      title,
+      description,
+      createdAt: Date.now(),
+    };
+
+    dispatch({
+      type: EActionTypes.ADD_IDEA,
+      payload: newIdea,
+    });
+
+    setShowForm(false);
+  };
 
   if (showForm) {
-    return (
-      <IdeaForm
-        onCancel={() => setShowForm(false)}
-        onSubmit={() => setShowForm(false)}
-      />
-    );
+    return <IdeaForm onCancel={() => setShowForm(false)} onSubmit={onSubmit} />;
   }
 
   return (
