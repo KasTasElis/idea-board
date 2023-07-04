@@ -1,4 +1,4 @@
-import { EActionTypes, TNotification, useGlobalState } from "../App";
+import { TNotification, useGlobalState, EActionTypes } from "../state";
 
 type TNotificationCardProps = {
   notification: TNotification;

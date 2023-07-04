@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IdeaForm, Card } from ".";
-import { EActionTypes, TNotification, useGlobalState } from "../App";
+import { useGlobalState, EActionTypes, TNotification } from "../state";
 
 type TIdea = {
   title: string;

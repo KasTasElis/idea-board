@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { EActionTypes, ESortingOptions, useGlobalState } from "../App";
+import { useGlobalState, ESortingOptions, EActionTypes } from "../state";
 
 const SortButton = ({
   text,

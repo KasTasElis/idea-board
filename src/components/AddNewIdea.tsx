@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IdeaForm, TIdea } from ".";
-import { EActionTypes, useGlobalState } from "../App";
+import { useGlobalState, EActionTypes } from "../state";
 
 const AddNewIdea = () => {
   const [showForm, setShowForm] = useState(false);
