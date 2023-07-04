@@ -11,7 +11,7 @@ const SortButton = ({
   onClick?: () => void;
 }) => {
   const buttonClasses = classNames("px-4 py-1 rounded-md text-sm font-medium", {
-    "bg-slate-400 text-slate-800": isActive,
+    "bg-slate-500 text-white": isActive,
     "bg-slate-200 text-slate-400": !isActive,
   });
 
