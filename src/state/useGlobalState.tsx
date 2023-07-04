@@ -54,16 +54,18 @@ const reducer = (state: TGlobalState, action: TAction<EActionTypes>) => {
           (notification) => notification.id !== action.payload.id
         ),
       };
-    case EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE:
+    case EActionTypes.SET_IDEAS:
       return {
-        ...action.payload,
-        notifications: [],
+        ...state,
+        ideas: action.payload,
       };
     case EActionTypes.SET_IDEA_SORTING_OPTION:
       return {
         ...state,
         ideaSorting: action.payload,
       };
+    case EActionTypes.RESET_STATE:
+      return initialState;
     default:
       return state;
   }
@@ -83,7 +85,7 @@ const GlobalStateProvider = ({ children }: { children: React.ReactNode }) => {
     const localStorageState = window.localStorage.getItem(localStorageName);
     if (localStorageState) {
       dispatch({
-        type: EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE,
+        type: EActionTypes.SET_IDEAS,
         payload: JSON.parse(localStorageState),
       });
     }
@@ -92,7 +94,10 @@ const GlobalStateProvider = ({ children }: { children: React.ReactNode }) => {
   // save state to local storage
   useEffect(() => {
     const saveStateToLocalStorage = () => {
-      window.localStorage.setItem(localStorageName, JSON.stringify(state));
+      window.localStorage.setItem(
+        localStorageName,
+        JSON.stringify(state.ideas) // intentionally storing ideas array only
+      );
     };
 
     window.addEventListener("beforeunload", saveStateToLocalStorage);

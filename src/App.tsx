@@ -5,6 +5,7 @@ import {
   SortOptions,
   TIdea,
   Notifications,
+  DevTools,
 } from "./components";
 import { useGlobalState } from "./state";
 
@@ -76,6 +77,10 @@ const App = () => {
 
   return (
     <div className="p-3">
+      <div className="mb-10">
+        <DevTools />
+      </div>
+
       <div className="max-w-screen-md mx-auto">
         <div className="flex flex-col justify-center text-center gap-2">
           <div className="text-5xl">🤔</div>

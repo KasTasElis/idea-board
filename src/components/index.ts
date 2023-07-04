@@ -4,3 +4,4 @@ export * from "./IdeaCard";
 export * from "./SortOptions";
 export * from "./AddNewIdea";
 export * from "./Notifications";
+export * from "./DevTools";

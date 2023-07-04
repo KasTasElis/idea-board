@@ -4,8 +4,9 @@ export enum EActionTypes {
   EDIT_IDEA = "EDIT_IDEA",
   SHOW_NOTIFICATION = "SHOW_NOTIFICATION",
   DELETE_NOTIFICATION = "DELETE_NOTIFICATION",
-  RESTORE_STATE_FROM_LOCAL_STORAGE = "RESTORE_STATE_FROM_LOCAL_STORAGE",
   SET_IDEA_SORTING_OPTION = "SET_IDEA_SORTING_OPTION",
+  SET_IDEAS = "SET_IDEAS",
+  RESET_STATE = "RESET_STATE",
 }
 
 export type TGlobalState = {
@@ -52,14 +53,18 @@ export type TAction<T extends EActionTypes> = T extends
       type: T;
       payload: TNotification;
     }
-  : T extends EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE
+  : T extends EActionTypes.SET_IDEAS
   ? {
       type: T;
-      payload: TGlobalState;
+      payload: TIdea[];
     }
   : T extends EActionTypes.SET_IDEA_SORTING_OPTION
   ? {
       type: T;
       payload: ESortingOptions;
+    }
+  : T extends EActionTypes.RESET_STATE
+  ? {
+      type: T;
     }
   : never;
