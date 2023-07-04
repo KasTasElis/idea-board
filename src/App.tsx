@@ -13,9 +13,24 @@ export type TNotification = {
   id: string;
 };
 
+export enum EDateSortOptions {
+  LATEST = "Latest",
+  OLDEST = "Oldest",
+}
+
+export enum EAlphabeticalSortOptions {
+  NONE = "None",
+  A_Z = "A-Z",
+  Z_A = "Z-A",
+}
+
 type TGlobalState = {
   ideas: TIdea[];
   notifications: TNotification[];
+  sortingOptions: {
+    byDate: EDateSortOptions;
+    byAlphabet: EAlphabeticalSortOptions;
+  };
 };
 
 type TContext = {
@@ -27,6 +42,10 @@ const initialContext: TContext = {
   state: {
     ideas: [],
     notifications: [],
+    sortingOptions: {
+      byDate: EDateSortOptions.LATEST,
+      byAlphabet: EAlphabeticalSortOptions.NONE,
+    },
   },
   dispatch: () => undefined,
 };
@@ -36,6 +55,10 @@ const GlobalState = createContext(initialContext);
 const initialState: TGlobalState = {
   ideas: [],
   notifications: [],
+  sortingOptions: {
+    byDate: EDateSortOptions.LATEST,
+    byAlphabet: EAlphabeticalSortOptions.NONE,
+  },
 };
 
 export const useGlobalState = () => useContext(GlobalState);
@@ -47,6 +70,8 @@ export enum EActionTypes {
   SHOW_NOTIFICATION = "SHOW_NOTIFICATION",
   DELETE_NOTIFICATION = "DELETE_NOTIFICATION",
   RESTORE_STATE_FROM_LOCAL_STORAGE = "RESTORE_STATE_FROM_LOCAL_STORAGE",
+  SET_DATE_SORT_OPTION = "SET_DATE_SORT_OPTION",
+  SET_ALPHABETICAL_SORT_OPTION = "SET_ALPHABETICAL_SORT_OPTION",
 }
 
 type TAction<T extends EActionTypes> = T extends
@@ -66,6 +91,16 @@ type TAction<T extends EActionTypes> = T extends
   ? {
       type: T;
       payload: TGlobalState;
+    }
+  : T extends EActionTypes.SET_DATE_SORT_OPTION
+  ? {
+      type: T;
+      payload: EDateSortOptions;
+    }
+  : T extends EActionTypes.SET_ALPHABETICAL_SORT_OPTION
+  ? {
+      type: T;
+      payload: EAlphabeticalSortOptions;
     }
   : never;
 
@@ -108,6 +143,22 @@ const reducer = (state: TGlobalState, action: TAction<EActionTypes>) => {
         ...action.payload,
         notifications: [],
       };
+    case EActionTypes.SET_DATE_SORT_OPTION:
+      return {
+        ...state,
+        sortingOptions: {
+          ...state.sortingOptions,
+          byDate: action.payload,
+        },
+      };
+    case EActionTypes.SET_ALPHABETICAL_SORT_OPTION:
+      return {
+        ...state,
+        sortingOptions: {
+          ...state.sortingOptions,
+          byAlphabet: action.payload,
+        },
+      };
     default:
       return state;
   }
@@ -117,29 +168,29 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // restore state from local storage
-  useEffect(() => {
-    const localStorageName = "idea-board-state";
+  // useEffect(() => {
+  //   const localStorageName = "idea-board-state";
 
-    const localStorageState = window.localStorage.getItem(localStorageName);
-    if (localStorageState) {
-      dispatch({
-        type: EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE,
-        payload: JSON.parse(localStorageState),
-      });
-    }
-  }, []);
+  //   const localStorageState = window.localStorage.getItem(localStorageName);
+  //   if (localStorageState) {
+  //     dispatch({
+  //       type: EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE,
+  //       payload: JSON.parse(localStorageState),
+  //     });
+  //   }
+  // }, []);
 
-  // save state to local storage
-  useEffect(() => {
-    const localStorageName = "idea-board-state";
+  // // save state to local storage
+  // useEffect(() => {
+  //   const localStorageName = "idea-board-state";
 
-    const saveStateToLocalStorage = () => {
-      window.localStorage.setItem(localStorageName, JSON.stringify(state));
-    };
+  //   const saveStateToLocalStorage = () => {
+  //     window.localStorage.setItem(localStorageName, JSON.stringify(state));
+  //   };
 
-    // Attach the beforeUnmount function to the beforeunload event
-    window.addEventListener("beforeunload", saveStateToLocalStorage);
-  }, [state]);
+  //   // Attach the beforeUnmount function to the beforeunload event
+  //   window.addEventListener("beforeunload", saveStateToLocalStorage);
+  // }, [state]);
 
   return (
     <div className="p-3">
