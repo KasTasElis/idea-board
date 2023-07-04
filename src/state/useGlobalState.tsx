@@ -11,7 +11,7 @@ const initialContext: TContext = {
   state: {
     ideas: [],
     notifications: [],
-    ideaSorting: ESortingOptions.BY_DATE_ASCENDING,
+    ideaSorting: ESortingOptions.BY_DATE_DESCENDING,
   },
   dispatch: () => undefined,
 };
@@ -74,7 +74,7 @@ const reducer = (state: TGlobalState, action: TAction<EActionTypes>) => {
 const initialState: TGlobalState = {
   ideas: [],
   notifications: [],
-  ideaSorting: ESortingOptions.BY_DATE_ASCENDING,
+  ideaSorting: ESortingOptions.BY_DATE_DESCENDING,
 };
 
 const GlobalStateProvider = ({ children }: { children: React.ReactNode }) => {

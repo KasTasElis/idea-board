@@ -34,8 +34,8 @@ export type TNotification = {
 };
 
 export enum ESortingOptions {
-  BY_DATE_ASCENDING = "Oldest",
   BY_DATE_DESCENDING = "Latest",
+  BY_DATE_ASCENDING = "Oldest",
   A_Z = "A-Z",
   Z_A = "Z-A",
 }
