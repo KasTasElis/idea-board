@@ -39,7 +39,13 @@ const CreatedOrUpdatedAt = ({ idea }: { idea: TIdea }) => {
 const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
   const { dispatch } = useGlobalState();
 
-  const onDelete = () => {
+  const onDelete = async () => {
+    const result = window.confirm(
+      "Are you sure you want to deltete this idea?"
+    );
+
+    if (!result) return;
+
     dispatch({
       type: EActionTypes.DELETE_IDEA,
       payload: idea,
