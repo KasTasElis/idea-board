@@ -168,29 +168,29 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // restore state from local storage
-  // useEffect(() => {
-  //   const localStorageName = "idea-board-state";
+  useEffect(() => {
+    const localStorageName = "idea-board-state";
 
-  //   const localStorageState = window.localStorage.getItem(localStorageName);
-  //   if (localStorageState) {
-  //     dispatch({
-  //       type: EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE,
-  //       payload: JSON.parse(localStorageState),
-  //     });
-  //   }
-  // }, []);
+    const localStorageState = window.localStorage.getItem(localStorageName);
+    if (localStorageState) {
+      dispatch({
+        type: EActionTypes.RESTORE_STATE_FROM_LOCAL_STORAGE,
+        payload: JSON.parse(localStorageState),
+      });
+    }
+  }, []);
 
-  // // save state to local storage
-  // useEffect(() => {
-  //   const localStorageName = "idea-board-state";
+  // save state to local storage
+  useEffect(() => {
+    const localStorageName = "idea-board-state";
 
-  //   const saveStateToLocalStorage = () => {
-  //     window.localStorage.setItem(localStorageName, JSON.stringify(state));
-  //   };
+    const saveStateToLocalStorage = () => {
+      window.localStorage.setItem(localStorageName, JSON.stringify(state));
+    };
 
-  //   // Attach the beforeUnmount function to the beforeunload event
-  //   window.addEventListener("beforeunload", saveStateToLocalStorage);
-  // }, [state]);
+    // Attach the beforeUnmount function to the beforeunload event
+    window.addEventListener("beforeunload", saveStateToLocalStorage);
+  }, [state]);
 
   return (
     <div className="p-3">
