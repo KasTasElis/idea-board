@@ -20,8 +20,8 @@ export type TNotification = {
 };
 
 export enum ESortingOptions {
-  BY_DATE_ASCENDING = "Latest",
-  BY_DATE_DESCENDING = "Oldest",
+  BY_DATE_ASCENDING = "Oldest",
+  BY_DATE_DESCENDING = "Latest",
   A_Z = "A-Z",
   Z_A = "Z-A",
 }
@@ -140,34 +140,6 @@ const reducer = (state: TGlobalState, action: TAction<EActionTypes>) => {
   }
 };
 
-const data: TIdea[] = [
-  {
-    id: "1",
-    title: "CIdea 1",
-    description: "This is the first idea",
-    createdAt: 1688459434723,
-  },
-  {
-    id: "2",
-    title: "AIdea 2",
-    description: "This is the second idea",
-    createdAt: 1688459452918,
-  },
-  {
-    id: "3",
-    title: "ZIdea 3",
-    description: "This is the third idea",
-    createdAt: 1688459469682,
-    updatedAt: 1688459516563,
-  },
-  {
-    id: "4",
-    title: "MIdea 4",
-    description: "This is the fourth idea",
-    createdAt: 1688459486935,
-  },
-];
-
 const sortIdeasAlphabeticallyByTitle = (
   ideas: TIdea[],
   sortOrder: ESortingOptions.A_Z | ESortingOptions.Z_A
@@ -187,12 +159,6 @@ const sortIdeasAlphabeticallyByTitle = (
     return 0;
   });
 
-const sortIdeasAZ = sortIdeasAlphabeticallyByTitle(data, ESortingOptions.A_Z);
-const sortIdeasZA = sortIdeasAlphabeticallyByTitle(data, ESortingOptions.Z_A);
-
-console.log("sortIdeasAZ", sortIdeasAZ);
-console.log("sortIdeasZA", sortIdeasZA);
-
 const sortIdeasByDate = (
   ideas: TIdea[],
   sortOrder:
@@ -203,44 +169,30 @@ const sortIdeasByDate = (
     const dateA = a.updatedAt || a.createdAt;
     const dateB = b.updatedAt || b.createdAt;
 
-    if (sortOrder === ESortingOptions.BY_DATE_DESCENDING) {
+    if (sortOrder === ESortingOptions.BY_DATE_ASCENDING) {
       return dateA - dateB;
-    } else if (sortOrder === ESortingOptions.BY_DATE_ASCENDING) {
+    } else if (sortOrder === ESortingOptions.BY_DATE_DESCENDING) {
       return dateB - dateA;
     }
 
     return 0;
   });
 
-const sortIdeasByDateAscending = sortIdeasByDate(
-  data,
-  ESortingOptions.BY_DATE_ASCENDING
-);
-const sortIdeasByDateDescending = sortIdeasByDate(
-  data,
-  ESortingOptions.BY_DATE_DESCENDING
-);
-
-console.log("sortIdeasByDateAscending", sortIdeasByDateAscending);
-console.log("sortIdeasByDateDescending", sortIdeasByDateDescending);
-
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const ideasSorted = useMemo(() => {
-    if (state.ideaSorting === ESortingOptions.A_Z) {
+    if (
+      state.ideaSorting === ESortingOptions.Z_A ||
+      state.ideaSorting === ESortingOptions.A_Z
+    ) {
       return sortIdeasAlphabeticallyByTitle(state.ideas, state.ideaSorting);
     }
 
-    if (state.ideaSorting === ESortingOptions.Z_A) {
-      return sortIdeasAlphabeticallyByTitle(state.ideas, state.ideaSorting);
-    }
-
-    if (state.ideaSorting === ESortingOptions.BY_DATE_ASCENDING) {
-      return sortIdeasByDate(state.ideas, state.ideaSorting);
-    }
-
-    if (state.ideaSorting === ESortingOptions.BY_DATE_DESCENDING) {
+    if (
+      state.ideaSorting === ESortingOptions.BY_DATE_ASCENDING ||
+      state.ideaSorting === ESortingOptions.BY_DATE_DESCENDING
+    ) {
       return sortIdeasByDate(state.ideas, state.ideaSorting);
     }
 
