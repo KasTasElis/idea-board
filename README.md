@@ -22,4 +22,6 @@ When working through the task you should treat it as if you're writing real worl
 `npm run dev` will run the development server.
 `npm run test` will run the suite of tests.
 
+## Application Preview
+
 ![app preview](./screenshot.png)
