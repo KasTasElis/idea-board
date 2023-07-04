@@ -24,4 +24,6 @@ When working through the task you should treat it as if you're writing real worl
 
 ## Application Preview
 
+[🧑‍💻 Preview Live Application Here](https://kastaselis.github.io/idea-board/)
+
 ![app preview](./screenshot.png)
