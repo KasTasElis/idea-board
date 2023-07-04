@@ -1,10 +1,5 @@
 import classNames from "classnames";
-import {
-  EActionTypes,
-  EAlphabeticalSortOptions,
-  EDateSortOptions,
-  useGlobalState,
-} from "../App";
+import { EActionTypes, ESortingOptions, useGlobalState } from "../App";
 
 const SortButton = ({
   text,
@@ -30,48 +25,26 @@ const SortButton = ({
 const SortOptions = () => {
   const {
     dispatch,
-    state: { sortingOptions },
+    state: { ideaSorting },
   } = useGlobalState();
 
   return (
-    <div className="flex items-center flex-wrap gap-x-5 gap-y-7 justify-between">
-      <div className="flex gap-3 items-center">
-        <div className="text-slate-400 font-light text-sm">Sort By:</div>
-        <div className="flex gap-1">
-          {Object.values(EDateSortOptions).map((value) => (
-            <SortButton
-              key={value}
-              text={value}
-              isActive={value === sortingOptions.byDate}
-              onClick={() => {
-                dispatch({
-                  type: EActionTypes.SET_DATE_SORT_OPTION,
-                  payload: value,
-                });
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="flex gap-3 items-center">
-        <div className="text-slate-400 font-light text-sm"> Alphabeticaly:</div>
-
-        <div className="flex gap-1">
-          {Object.values(EAlphabeticalSortOptions).map((value) => (
-            <SortButton
-              key={value}
-              text={value}
-              isActive={value === sortingOptions.byAlphabet}
-              onClick={() => {
-                dispatch({
-                  type: EActionTypes.SET_ALPHABETICAL_SORT_OPTION,
-                  payload: value,
-                });
-              }}
-            />
-          ))}
-        </div>
+    <div className="flex gap-3 items-center">
+      <div className="text-slate-400 font-light text-sm">Sort By:</div>
+      <div className="flex gap-2">
+        {Object.values(ESortingOptions).map((value) => (
+          <SortButton
+            key={value}
+            text={value}
+            isActive={value === ideaSorting}
+            onClick={() => {
+              dispatch({
+                type: EActionTypes.SET_IDEA_SORTING_OPTION,
+                payload: value,
+              });
+            }}
+          />
+        ))}
       </div>
     </div>
   );
