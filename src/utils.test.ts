@@ -4,7 +4,9 @@ import {
   createNotificationObject,
   createUpdatedIdeaObject,
   getFormattedIdeaDateString,
+  sortIdeasAlphabeticallyByTitle,
 } from "./utils";
+import { ESortingOptions } from "./state";
 
 test("creates a new idea object", () => {
   const title = "Say Hello";
@@ -56,15 +58,15 @@ test("creates a new notification object", () => {
 
 // need a better test here
 describe("returns correctly formatted date string for", () => {
+  const title = "Say Hello";
+  const description = "Say hello to everybody.";
+
+  const idea = createIdeaObject({
+    title,
+    description,
+  });
+
   test("new idea", () => {
-    const title = "Say Hello";
-    const description = "Say hello to everybody.";
-
-    const idea = createIdeaObject({
-      title,
-      description,
-    });
-
     const createdAtString = getFormattedIdeaDateString(idea);
 
     expect(createdAtString).not.toContain("Updated");
@@ -72,14 +74,6 @@ describe("returns correctly formatted date string for", () => {
   });
 
   test("updated idea", () => {
-    const title = "Say Hello";
-    const description = "Say hello to everybody.";
-
-    const idea = createIdeaObject({
-      title,
-      description,
-    });
-
     const newTitle = "Say Hello World!";
     const newDescription = "Say hello to everybody in the world.";
 
@@ -92,5 +86,35 @@ describe("returns correctly formatted date string for", () => {
 
     expect(updatedAtString).not.toContain("Created");
     expect(updatedAtString).toContain("Updated");
+  });
+});
+
+describe("sorts ideas alphabetically by title", () => {
+  const ideas = [
+    createIdeaObject({ title: "ZAAA", description: "AAAA" }),
+    createIdeaObject({ title: "BAAA", description: "AAAA" }),
+    createIdeaObject({ title: "ABBB", description: "AAAA" }),
+  ];
+
+  test("ascending", () => {
+    const sortedIdeasArr = sortIdeasAlphabeticallyByTitle(
+      ideas,
+      ESortingOptions.A_Z
+    );
+
+    expect(sortedIdeasArr[0].title).toBe("ABBB");
+    expect(sortedIdeasArr[1].title).toBe("BAAA");
+    expect(sortedIdeasArr[2].title).toBe("ZAAA");
+  });
+
+  test("descending", () => {
+    const sortedIdeasArr = sortIdeasAlphabeticallyByTitle(
+      ideas,
+      ESortingOptions.Z_A
+    );
+
+    expect(sortedIdeasArr[2].title).toBe("ABBB");
+    expect(sortedIdeasArr[1].title).toBe("BAAA");
+    expect(sortedIdeasArr[0].title).toBe("ZAAA");
   });
 });
