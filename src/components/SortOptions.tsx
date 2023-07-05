@@ -1,15 +1,13 @@
 import classNames from "classnames";
 import { useGlobalState, ESortingOptions, EActionTypes } from "../state";
 
-const SortButton = ({
-  text,
-  isActive = false,
-  onClick,
-}: {
+type SortButtonProps = {
   text: string;
   isActive?: boolean;
   onClick?: () => void;
-}) => {
+};
+
+const SortButton = ({ text, isActive = false, onClick }: SortButtonProps) => {
   const buttonClasses = classNames("px-4 py-1 rounded-md text-sm font-medium", {
     "bg-slate-500 text-white": isActive,
     "bg-slate-200 text-slate-400": !isActive,
@@ -28,6 +26,13 @@ const SortOptions = () => {
     state: { ideaSorting },
   } = useGlobalState();
 
+  const onClick = (value: ESortingOptions) => {
+    dispatch({
+      type: EActionTypes.SET_IDEA_SORTING_OPTION,
+      payload: value,
+    });
+  };
+
   return (
     <div className="flex gap-3 items-center">
       <div className="text-slate-400 font-light text-sm">Sort By:</div>
@@ -37,12 +42,7 @@ const SortOptions = () => {
             key={value}
             text={value}
             isActive={value === ideaSorting}
-            onClick={() => {
-              dispatch({
-                type: EActionTypes.SET_IDEA_SORTING_OPTION,
-                payload: value,
-              });
-            }}
+            onClick={() => onClick(value)}
           />
         ))}
       </div>
