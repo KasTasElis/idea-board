@@ -10,7 +10,7 @@ export const createIdeaObject = ({
   title: string;
   description: string;
 }): TIdea => ({
-  id: Date.now().toString(),
+  id: Math.random().toString(36).substring(2, 9),
   title,
   description,
   createdAt: Date.now(),

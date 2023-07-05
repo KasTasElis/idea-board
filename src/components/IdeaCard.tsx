@@ -31,7 +31,7 @@ export const getFormattedIdeaDateString = (idea: TIdea) => {
   return `${relevantWord} @ ${dateString}`;
 };
 
-export const updateIdea = (
+export const createUpdatedIdeaObject = (
   ideaToUpdate: TIdea,
   { title, description }: { title: string; description: string }
 ): TIdea => ({
@@ -42,7 +42,7 @@ export const updateIdea = (
 });
 
 export const createNotification = (message: string): TNotification => ({
-  id: Date.now().toString(),
+  id: Math.random().toString(36).substring(2, 9),
   message,
 });
 
@@ -72,7 +72,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
     title: string;
     description: string;
   }) => {
-    const updatedIdea = updateIdea(idea, { title, description });
+    const updatedIdea = createUpdatedIdeaObject(idea, { title, description });
 
     dispatch({
       type: EActionTypes.EDIT_IDEA,
