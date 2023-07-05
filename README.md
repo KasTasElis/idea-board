@@ -17,10 +17,18 @@ When working through the task you should treat it as if you're writing real worl
 - Add a character countdown as the user is approaching the limit of their description text.
 - Add an unobtrusive notification when an update is made to a tile.
 
-## Getting started
+## Tech Choices
+
+- Vite build engine
+- Vitest for unit & integration testing
+- Cypress for e2e testing
+- React & Typescript for views 💪
+
+## Important Commands
 
 `npm run dev` will run the development server.
 `npm run test` will run the suite of tests.
+`npm run coverage` runs tests and generates a coverage report.
 
 ## Application Preview
 
