@@ -6,6 +6,11 @@ export default defineConfig(({ command }) => {
   const config = {
     plugins: [react()],
     base: "/",
+    test: {
+      coverage: {
+        provider: "istanbul",
+      },
+    },
   };
 
   if (command !== "serve") {
