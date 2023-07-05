@@ -1,20 +1,7 @@
 import { useState } from "react";
-import { IdeaForm, TIdea } from ".";
+import { IdeaForm } from ".";
 import { useGlobalState, EActionTypes } from "../state";
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const createIdeaObject = ({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}): TIdea => ({
-  id: Math.random().toString(36).substring(2, 9),
-  title,
-  description,
-  createdAt: Date.now(),
-});
+import { createIdeaObject } from "../utils";
 
 const AddNewIdea = () => {
   const [showForm, setShowForm] = useState(false);

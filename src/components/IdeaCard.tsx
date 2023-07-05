@@ -1,7 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import { IdeaForm, Card } from ".";
-import { useGlobalState, EActionTypes, TNotification } from "../state";
+import { useGlobalState, EActionTypes } from "../state";
+import {
+  createNotification,
+  createUpdatedIdeaObject,
+  getFormattedIdeaDateString,
+} from "../utils";
 
 type TIdea = {
   title: string;
@@ -13,38 +18,6 @@ type TIdea = {
 interface IdeaCardProps {
   idea: TIdea;
 }
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const getFormattedIdeaDateString = (idea: TIdea) => {
-  const relevantTimeStamp = idea.updatedAt || idea.createdAt;
-  const relevantWord = idea.updatedAt ? "✍️ Updated" : "💡 Created";
-
-  const date = new Date(relevantTimeStamp);
-  const dateString = date.toLocaleDateString("en-UK", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  return `${relevantWord} @ ${dateString}`;
-};
-
-export const createUpdatedIdeaObject = (
-  ideaToUpdate: TIdea,
-  { title, description }: { title: string; description: string }
-): TIdea => ({
-  ...ideaToUpdate,
-  title,
-  description,
-  updatedAt: Date.now(),
-});
-
-export const createNotification = (message: string): TNotification => ({
-  id: Math.random().toString(36).substring(2, 9),
-  message,
-});
 
 const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
   const { dispatch } = useGlobalState();

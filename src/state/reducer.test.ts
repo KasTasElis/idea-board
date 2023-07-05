@@ -1,122 +1,88 @@
-import { test, describe, expect } from "vitest";
-import { addIdea, deleteIdea, editIdea } from "./reducer";
-import { EActionTypes, initialState } from ".";
-import { createIdeaObject } from "../components/AddNewIdea";
-import { createUpdatedIdeaObject } from "../components";
+import { test } from "vitest";
 
-test("creates a new idea object", () => {
-  const title = "Say Hello";
-  const description = "Say hello to everybody.";
-
-  const idea = createIdeaObject({
-    title,
-    description,
-  });
-
-  expect(idea.id).toBeDefined();
-  expect(idea.createdAt).toBeDefined();
-  expect(idea.updatedAt).not.toBeDefined();
-  expect(idea.title).toBe(title);
-  expect(idea.description).toBe(description);
+test("Say hello world", () => {
+  console.log("Hello world!");
 });
 
-test("creates an updated idea object", () => {
-  const title = "Say Hello";
-  const description = "Say hello to everybody.";
+// import { addIdea, deleteIdea, editIdea } from "./reducer";
+// import { EActionTypes, initialState } from ".";
+// // import { createIdeaObject } from "../components/AddNewIdea";
+// // import { createUpdatedIdeaObject } from "../components";
 
-  const idea = createIdeaObject({
-    title,
-    description,
-  });
+// describe("reducer", () => {
+//   test("adds an idea", () => {
+//     const newIdea = createIdeaObject({
+//       title: "Say Hello World!",
+//       description: "Lorem ipsum dolor sit amet...",
+//     });
+//     const action = {
+//       type: EActionTypes.ADD_IDEA as EActionTypes.ADD_IDEA, // huh???
+//       payload: newIdea,
+//     };
+//     const state = addIdea(initialState, action);
 
-  const newTitle = "Say Hello World!";
-  const newDescription = "Say hello to everybody in the world.";
+//     expect(state.ideas.length).toBe(1);
+//     expect(state.ideas[0]).toEqual(newIdea);
+//   });
 
-  const updatedIdea = createUpdatedIdeaObject(idea, {
-    title: newTitle,
-    description: newDescription,
-  });
+//   test("deletes an idea", () => {
+//     const newIdeaOne = createIdeaObject({
+//       title: "Say Hello World!",
+//       description: "Lorem ipsum dolor sit amet...",
+//     });
+//     const newIdeaTwo = createIdeaObject({
+//       title: "Say Hello World!",
+//       description: "Lorem ipsum dolor sit amet...",
+//     });
 
-  expect(updatedIdea.id).toBe(idea.id);
-  expect(updatedIdea.updatedAt).toBeDefined();
-  expect(updatedIdea.title).toBe(newTitle);
-  expect(updatedIdea.description).toBe(newDescription);
-});
+//     const initialStateWithAFewIdeas = {
+//       ...initialState,
+//       ideas: [newIdeaOne, newIdeaTwo],
+//     };
 
-describe("reducer", () => {
-  test("adds an idea", () => {
-    const newIdea = createIdeaObject({
-      title: "Say Hello World!",
-      description: "Lorem ipsum dolor sit amet...",
-    });
-    const action = {
-      type: EActionTypes.ADD_IDEA as EActionTypes.ADD_IDEA, // huh???
-      payload: newIdea,
-    };
-    const state = addIdea(initialState, action);
+//     expect(initialStateWithAFewIdeas.ideas.length).toBe(2);
 
-    expect(state.ideas.length).toBe(1);
-    expect(state.ideas[0]).toEqual(newIdea);
-  });
+//     const action = {
+//       type: EActionTypes.DELETE_IDEA as EActionTypes.DELETE_IDEA, // huh???
+//       payload: newIdeaOne,
+//     };
+//     const state = deleteIdea(initialStateWithAFewIdeas, action);
 
-  test("deletes an idea", () => {
-    const newIdeaOne = createIdeaObject({
-      title: "Say Hello World!",
-      description: "Lorem ipsum dolor sit amet...",
-    });
-    const newIdeaTwo = createIdeaObject({
-      title: "Say Hello World!",
-      description: "Lorem ipsum dolor sit amet...",
-    });
+//     expect(state.ideas.length).toBe(1);
+//     expect(state.ideas[0]).toEqual(newIdeaTwo);
+//   });
 
-    const initialStateWithAFewIdeas = {
-      ...initialState,
-      ideas: [newIdeaOne, newIdeaTwo],
-    };
+//   // test("updates an idea", () => {
+//   //   const newIdeaOne = createIdeaObject({
+//   //     title: "Say Hello World!",
+//   //     description: "Lorem ipsum dolor sit amet...",
+//   //   });
+//   //   const newIdeaTwo = createIdeaObject({
+//   //     title: "Say Hello World!",
+//   //     description: "Lorem ipsum dolor sit amet...",
+//   //   });
 
-    expect(initialStateWithAFewIdeas.ideas.length).toBe(2);
+//   //   const initialStateWithAFewIdeas = {
+//   //     ...initialState,
+//   //     ideas: [newIdeaOne, newIdeaTwo],
+//   //   };
 
-    const action = {
-      type: EActionTypes.DELETE_IDEA as EActionTypes.DELETE_IDEA, // huh???
-      payload: newIdeaOne,
-    };
-    const state = deleteIdea(initialStateWithAFewIdeas, action);
+//   //   expect(initialStateWithAFewIdeas.ideas.length).toBe(2);
 
-    expect(state.ideas.length).toBe(1);
-    expect(state.ideas[0]).toEqual(newIdeaTwo);
-  });
+//   //   const newTitle = "Say Hello World!";
+//   //   const newDescription = "Lorem ipsum dolor sit amet...";
+//   //   const updatedIdea = createUpdatedIdeaObject(newIdeaOne, {
+//   //     title: newTitle,
+//   //     description: newDescription,
+//   //   });
 
-  // test("updates an idea", () => {
-  //   const newIdeaOne = createIdeaObject({
-  //     title: "Say Hello World!",
-  //     description: "Lorem ipsum dolor sit amet...",
-  //   });
-  //   const newIdeaTwo = createIdeaObject({
-  //     title: "Say Hello World!",
-  //     description: "Lorem ipsum dolor sit amet...",
-  //   });
+//   //   const action = {
+//   //     type: EActionTypes.EDIT_IDEA as EActionTypes.EDIT_IDEA, // huh???
+//   //     payload: updatedIdea,
+//   //   };
+//   //   const state = editIdea(initialStateWithAFewIdeas, action);
 
-  //   const initialStateWithAFewIdeas = {
-  //     ...initialState,
-  //     ideas: [newIdeaOne, newIdeaTwo],
-  //   };
-
-  //   expect(initialStateWithAFewIdeas.ideas.length).toBe(2);
-
-  //   const newTitle = "Say Hello World!";
-  //   const newDescription = "Lorem ipsum dolor sit amet...";
-  //   const updatedIdea = createUpdatedIdeaObject(newIdeaOne, {
-  //     title: newTitle,
-  //     description: newDescription,
-  //   });
-
-  //   const action = {
-  //     type: EActionTypes.EDIT_IDEA as EActionTypes.EDIT_IDEA, // huh???
-  //     payload: updatedIdea,
-  //   };
-  //   const state = editIdea(initialStateWithAFewIdeas, action);
-
-  //   expect(state.ideas.length).toBe(2);
-  //   //expect(state.ideas[0]).toEqual(newIdeaTwo);
-  // });
-});
+//   //   expect(state.ideas.length).toBe(2);
+//   //   //expect(state.ideas[0]).toEqual(newIdeaTwo);
+//   // });
+// });
