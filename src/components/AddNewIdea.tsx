@@ -2,6 +2,20 @@ import { useState } from "react";
 import { IdeaForm, TIdea } from ".";
 import { useGlobalState, EActionTypes } from "../state";
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const createIdeaObject = ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}): TIdea => ({
+  id: Date.now().toString(),
+  title,
+  description,
+  createdAt: Date.now(),
+});
+
 const AddNewIdea = () => {
   const [showForm, setShowForm] = useState(false);
   const { dispatch } = useGlobalState();
@@ -13,12 +27,7 @@ const AddNewIdea = () => {
     description: string;
     title: string;
   }) => {
-    const newIdea: TIdea = {
-      id: String(Date.now()),
-      title,
-      description,
-      createdAt: Date.now(),
-    };
+    const newIdea = createIdeaObject({ title, description });
 
     dispatch({
       type: EActionTypes.ADD_IDEA,

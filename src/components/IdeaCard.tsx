@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import { IdeaForm, Card } from ".";
 import { useGlobalState, EActionTypes, TNotification } from "../state";
@@ -13,46 +14,56 @@ interface IdeaCardProps {
   idea: TIdea;
 }
 
-const timeStampToDate = (timeStamp: number) => {
-  const date = new Date(timeStamp);
-  return date.toLocaleDateString("en-UK", {
+// eslint-disable-next-line react-refresh/only-export-components
+export const getFormattedIdeaDateString = (idea: TIdea) => {
+  const relevantTimeStamp = idea.updatedAt || idea.createdAt;
+  const relevantWord = idea.updatedAt ? "✍️ Updated" : "💡 Created";
+
+  const date = new Date(relevantTimeStamp);
+  const dateString = date.toLocaleDateString("en-UK", {
     year: "numeric",
     month: "short",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
   });
+
+  return `${relevantWord} @ ${dateString}`;
 };
 
-const CreatedOrUpdatedAt = ({ idea }: { idea: TIdea }) => {
-  const relevantTimeStamp = idea.updatedAt || idea.createdAt;
-  const relevantWord = idea.updatedAt ? "✍️ Updated" : "💡 Created";
-  const timeStamp = timeStampToDate(relevantTimeStamp);
+export const updateIdea = (
+  ideaToUpdate: TIdea,
+  { title, description }: { title: string; description: string }
+): TIdea => ({
+  ...ideaToUpdate,
+  title,
+  description,
+  updatedAt: Date.now(),
+});
 
-  return (
-    <p className="text-sm text-slate-500 font-light">
-      {`${relevantWord} @ ${timeStamp}`}
-    </p>
-  );
-};
+export const createNotification = (message: string): TNotification => ({
+  id: Date.now().toString(),
+  message,
+});
 
 const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
   const { dispatch } = useGlobalState();
+  const [isEditing, setIsEditing] = useState(false);
 
-  const onDelete = async () => {
-    const result = window.confirm(
+  const dateString = getFormattedIdeaDateString(idea);
+
+  const onDelete = () => {
+    const confirm = window.confirm(
       "Are you sure you want to deltete this idea?"
     );
 
-    if (!result) return;
+    if (!confirm) return;
 
     dispatch({
       type: EActionTypes.DELETE_IDEA,
       payload: idea,
     });
   };
-
-  const [isEditing, setIsEditing] = useState(false);
 
   const onEditSubmit = ({
     title,
@@ -61,22 +72,14 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
     title: string;
     description: string;
   }) => {
-    const editedIdea: TIdea = {
-      ...idea,
-      title,
-      description,
-      updatedAt: Date.now(),
-    };
+    const updatedIdea = updateIdea(idea, { title, description });
 
     dispatch({
       type: EActionTypes.EDIT_IDEA,
-      payload: editedIdea,
+      payload: updatedIdea,
     });
 
-    const notification: TNotification = {
-      id: String(Date.now()),
-      message: "Idea edited successfully!",
-    };
+    const notification = createNotification("Idea edited successfully!");
 
     dispatch({
       type: EActionTypes.SHOW_NOTIFICATION,
@@ -109,7 +112,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
       <p className="mb-5 text-slate-700">{idea.description}</p>
 
       <div className="flex items-center justify-between">
-        <CreatedOrUpdatedAt idea={idea} />
+        <p className="text-sm text-slate-500 font-light">{dateString}</p>
 
         <div className="flex gap-3">
           <button
