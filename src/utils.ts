@@ -42,28 +42,45 @@ export const sortIdeasByDate = (
 export const createIdeaObject = ({
   title,
   description,
+  id,
+  createdAt,
 }: {
   title: string;
   description: string;
+  id: string;
+  createdAt: number;
 }): TIdea => ({
-  id: Math.random().toString(36).substring(2, 9),
+  id,
   title,
   description,
-  createdAt: Date.now(),
+  createdAt,
 });
 
 export const createUpdatedIdeaObject = (
   ideaToUpdate: TIdea,
-  { title, description }: { title: string; description: string }
+  {
+    title,
+    description,
+    updatedAt,
+  }: { title?: string; description?: string; updatedAt: number }
 ): TIdea => ({
   ...ideaToUpdate,
-  title,
-  description,
-  updatedAt: Date.now(),
+  title: title || ideaToUpdate.title,
+  description: description || ideaToUpdate.description,
+  updatedAt,
 });
 
-export const createNotificationObject = (message: string): TNotification => ({
-  id: Math.random().toString(36).substring(2, 9),
+/* 
+  @uuid
+  Due to simplicity of this function i am ok with it's impurity. 
+*/
+export const uuid = () => Math.random().toString(36).substring(2, 9);
+
+export const createNotificationObject = (
+  message: string,
+  id: string
+): TNotification => ({
+  id,
   message,
 });
 

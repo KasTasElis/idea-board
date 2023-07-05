@@ -1,31 +1,32 @@
 import { TIdea } from "./state/types";
+import { uuid } from "./utils";
 
 const mockIdeas: TIdea[] = [
   {
-    id: "1688470807293",
+    id: uuid(),
     title: "Lorem Ipsum",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    createdAt: 1688470807293,
+    createdAt: Date.now(),
   },
   {
-    id: "1688470800293",
+    id: uuid(),
     title: "Adolor Sitamet",
     description:
       "Necessitatibus tempore impedit fuga, eveniet aliquam quo suscipit numquam.",
-    createdAt: 1688470800293,
+    createdAt: Date.now() + 10000,
   },
   {
-    id: "1688470007293",
+    id: uuid(),
     title: "Consectetur Adipiscing",
     description: "Quo suscipit numquam esse temporibus cupiditate cum quod.",
-    createdAt: 1688470007293,
-    updatedAt: 1688471712140,
+    createdAt: Date.now() + 20000,
+    updatedAt: Date.now() + 50000,
   },
   {
-    id: "1688470021090",
+    id: uuid(),
     title: "Architecto error ullam!",
     description: "Placeat nesciunt aliquid ducimus, consequuntur consequatur.",
-    createdAt: 1688470021090,
+    createdAt: Date.now() + 30000,
   },
 ];
 

@@ -3,9 +3,10 @@ import { useState } from "react";
 import { IdeaForm, Card } from ".";
 import { useGlobalState, EActionTypes } from "../state";
 import {
-  createNotification,
+  createNotificationObject,
   createUpdatedIdeaObject,
   getFormattedIdeaDateString,
+  uuid,
 } from "../utils";
 
 type TIdea = {
@@ -45,14 +46,21 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
     title: string;
     description: string;
   }) => {
-    const updatedIdea = createUpdatedIdeaObject(idea, { title, description });
+    const updatedIdea = createUpdatedIdeaObject(idea, {
+      title,
+      description,
+      updatedAt: Date.now(),
+    });
 
     dispatch({
       type: EActionTypes.EDIT_IDEA,
       payload: updatedIdea,
     });
 
-    const notification = createNotification("Idea edited successfully!");
+    const notification = createNotificationObject(
+      "Idea edited successfully!",
+      uuid()
+    );
 
     dispatch({
       type: EActionTypes.SHOW_NOTIFICATION,
