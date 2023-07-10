@@ -27,8 +27,10 @@ When working through the task you should treat it as if you're writing real worl
 ## Important Commands
 
 `npm run dev` will run the development server.
-`npm run test` will run the suite of tests.
-`npm run coverage` runs tests and generates a coverage report.
+`npm run build` runs build script.
+`npm run test:unit` will run the unit & integreation test suite.
+`npm run test:unit:coverage` runs unit & integration test suite and generates a coverage report.
+`npm run test:e2e` will run end to end test suite in headless mode. (Make sure your dev server is running first!)
 
 ## Application Preview
 
