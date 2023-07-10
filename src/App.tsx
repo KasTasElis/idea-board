@@ -101,11 +101,13 @@ const App = () => {
               <SortOptions />
             </div>
 
-            {ideasSorted.map((idea) => (
-              <div className="mb-5" key={idea.id}>
-                <IdeaCard idea={idea} />
-              </div>
-            ))}
+            <div id="idea-container">
+              {ideasSorted.map((idea) => (
+                <div className="mb-5" key={idea.id}>
+                  <IdeaCard idea={idea} />
+                </div>
+              ))}
+            </div>
           </>
         ) : null}
       </div>
