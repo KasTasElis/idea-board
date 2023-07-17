@@ -9,12 +9,14 @@ import {
   setIdeas,
   showNotification,
 } from "./reducer";
-import { EActionTypes, ESortingOptions, TIdea, initialState } from ".";
 import {
-  createNotificationObject,
-  createUpdatedIdeaObject,
-  uuid,
-} from "../utils";
+  EActionTypes,
+  ESortingOptions,
+  TIdea,
+  TNotification,
+  initialState,
+} from ".";
+import { createUpdatedIdeaObject, uuid } from "../utils";
 import { mockIdeas } from "../consts";
 
 test("sets ideas array", () => {
@@ -177,7 +179,10 @@ describe("updates idea", () => {
 });
 
 describe("notification", () => {
-  const notification = createNotificationObject("Hello World!", uuid());
+  const notification: TNotification = {
+    message: "Hello World!",
+    id: uuid(),
+  };
 
   test("adds", () => {
     const action = {

@@ -1,13 +1,12 @@
 import { test, expect, describe } from "vitest";
 import {
-  createNotificationObject,
   createUpdatedIdeaObject,
   getFormattedIdeaDateString,
   sortIdeasAlphabeticallyByTitle,
   sortIdeasByDate,
   uuid,
 } from "./utils";
-import { ESortingOptions } from "./state";
+import { ESortingOptions, TNotification } from "./state";
 import { TIdea } from "./components";
 
 test("creates a unique ID string", () => {
@@ -104,7 +103,7 @@ test("creates a new notification object", () => {
   const message = "Say Hello World!";
   const id = uuid();
 
-  const notification = createNotificationObject(message, id);
+  const notification: TNotification = { message, id };
 
   expect(notification.message).toBe(message);
   expect(notification.id).toBe(id);

@@ -1,5 +1,5 @@
 import { TIdea } from "./components";
-import { ESortingOptions, TNotification } from "./state";
+import { ESortingOptions } from "./state";
 
 export const sortIdeas = (ideas: TIdea[], typeOfSort: ESortingOptions) => {
   if (
@@ -76,14 +76,6 @@ export const createUpdatedIdeaObject = (
   Due to simplicity of this function i am ok with it's impurity. 
 */
 export const uuid = () => Math.random().toString(36).substring(2, 9);
-
-export const createNotificationObject = (
-  message: string,
-  id: string
-): TNotification => ({
-  id,
-  message,
-});
 
 export const getFormattedIdeaDateString = (idea: TIdea) => {
   const relevantTimeStamp = idea.updatedAt || idea.createdAt;

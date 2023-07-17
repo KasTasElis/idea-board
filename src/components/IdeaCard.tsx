@@ -1,9 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import { IdeaForm, Card } from ".";
-import { useGlobalState, EActionTypes } from "../state";
+import { useGlobalState, EActionTypes, TNotification } from "../state";
 import {
-  createNotificationObject,
   createUpdatedIdeaObject,
   getFormattedIdeaDateString,
   uuid,
@@ -57,10 +56,10 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
       payload: updatedIdea,
     });
 
-    const notification = createNotificationObject(
-      "Idea edited successfully!",
-      uuid()
-    );
+    const notification: TNotification = {
+      message: "Idea edited successfully!",
+      id: uuid(),
+    };
 
     dispatch({
       type: EActionTypes.SHOW_NOTIFICATION,
