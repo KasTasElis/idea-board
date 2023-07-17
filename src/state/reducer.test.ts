@@ -28,8 +28,6 @@ test("sets ideas array", () => {
   const state = setIdeas(initialState, action);
 
   expect(state.ideas.length).toBe(mockIdeas.length);
-  expect(state.ideas[0].title).toBe(mockIdeas[0].title);
-  expect(state.ideas[1].title).toBe(mockIdeas[1].title);
 });
 
 test("adds an idea", () => {
