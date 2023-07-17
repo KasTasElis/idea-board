@@ -1,6 +1,5 @@
 import { test, expect, describe } from "vitest";
 import {
-  createIdeaObject,
   createNotificationObject,
   createUpdatedIdeaObject,
   getFormattedIdeaDateString,
@@ -9,6 +8,7 @@ import {
   uuid,
 } from "./utils";
 import { ESortingOptions } from "./state";
+import { TIdea } from "./components";
 
 test("creates a unique ID string", () => {
   const uniqueIdOne = uuid();
@@ -23,12 +23,12 @@ test("creates a new idea object", () => {
   const id = uuid();
   const createdAt = Date.now();
 
-  const idea = createIdeaObject({
+  const idea: TIdea = {
     title,
     description,
     id,
     createdAt,
-  });
+  };
 
   expect(idea.id).toBe(id);
   expect(idea.title).toBe(title);
@@ -43,12 +43,12 @@ describe("updates idea object with", () => {
   const id = uuid();
   const createdAt = Date.now();
 
-  const idea = createIdeaObject({
+  const idea: TIdea = {
     title,
     description,
     id,
     createdAt,
-  });
+  };
 
   const newTitle = "Say Hello World!";
   const newDescription = "Say hello to everybody in the world.";
@@ -117,12 +117,12 @@ describe("returns correctly formatted date string for", () => {
   const id = uuid();
   const createdAt = Date.now();
 
-  const idea = createIdeaObject({
+  const idea: TIdea = {
     title,
     description,
     id,
     createdAt,
-  });
+  };
 
   test("new idea", () => {
     const createdAtString = getFormattedIdeaDateString(idea);
@@ -150,25 +150,25 @@ describe("returns correctly formatted date string for", () => {
 });
 
 describe("sorts ideas alphabetically by title", () => {
-  const ideas = [
-    createIdeaObject({
+  const ideas: TIdea[] = [
+    {
       title: "ZAAA",
       description: "AAAA",
       id: uuid(),
       createdAt: Date.now(),
-    }),
-    createIdeaObject({
+    },
+    {
       title: "BAAA",
       description: "AAAA",
       id: uuid(),
-      createdAt: Date.now(),
-    }),
-    createIdeaObject({
+      createdAt: Date.now() + 1000 * 60 * 3,
+    },
+    {
       title: "ABBB",
       description: "AAAA",
       id: uuid(),
-      createdAt: Date.now(),
-    }),
+      createdAt: Date.now() + 1000 * 60 * 7,
+    },
   ];
 
   test("ascending", () => {
@@ -195,25 +195,25 @@ describe("sorts ideas alphabetically by title", () => {
 });
 
 describe("sorts ideas by date", () => {
-  const ideas = [
-    createIdeaObject({
+  const ideas: TIdea[] = [
+    {
       title: "ZAAA",
       description: "AAAA",
       id: uuid(),
       createdAt: Date.now(),
-    }),
-    createIdeaObject({
+    },
+    {
       title: "BAAA",
       description: "AAAA",
       id: uuid(),
       createdAt: Date.now() + 20000,
-    }),
-    createIdeaObject({
+    },
+    {
       title: "ABBB",
       description: "AAAA",
       id: uuid(),
       createdAt: Date.now() + 10000,
-    }),
+    },
   ];
 
   test("ascending", () => {

@@ -57,23 +57,6 @@ export const sortIdeasByDate = (
     return 0;
   });
 
-export const createIdeaObject = ({
-  title,
-  description,
-  id,
-  createdAt,
-}: {
-  title: string;
-  description: string;
-  id: string;
-  createdAt: number;
-}): TIdea => ({
-  id,
-  title,
-  description,
-  createdAt,
-});
-
 export const createUpdatedIdeaObject = (
   ideaToUpdate: TIdea,
   {

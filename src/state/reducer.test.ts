@@ -11,7 +11,6 @@ import {
 } from "./reducer";
 import { EActionTypes, ESortingOptions, TIdea, initialState } from ".";
 import {
-  createIdeaObject,
   createNotificationObject,
   createUpdatedIdeaObject,
   uuid,
@@ -32,12 +31,12 @@ test("sets ideas array", () => {
 });
 
 test("adds an idea", () => {
-  const newIdea = createIdeaObject({
+  const newIdea: TIdea = {
     title: "Say Hello World!",
     description: "Lorem ipsum dolor sit amet...",
     id: uuid(),
     createdAt: Date.now(),
-  });
+  };
 
   const action = {
     type: EActionTypes.ADD_IDEA as EActionTypes.ADD_IDEA, // huh???
@@ -51,18 +50,18 @@ test("adds an idea", () => {
 });
 
 test("deletes an idea", () => {
-  const newIdeaOne = createIdeaObject({
+  const newIdeaOne: TIdea = {
     title: "Say Hello World!",
     description: "Lorem ipsum dolor sit amet...",
     id: uuid(),
     createdAt: Date.now(),
-  });
-  const newIdeaTwo = createIdeaObject({
+  };
+  const newIdeaTwo: TIdea = {
     title: "Say Hello World!",
     description: "Lorem ipsum dolor sit amet...",
     id: uuid(),
     createdAt: Date.now() + 1000 * 60 * 60,
-  });
+  };
 
   const initialStateWithAFewIdeas = {
     ...initialState,
@@ -98,18 +97,18 @@ test("deletes an idea", () => {
 });
 
 describe("updates idea", () => {
-  const newIdeaOne = createIdeaObject({
+  const newIdeaOne: TIdea = {
     title: "Say Hello World!",
     description: "Lorem ipsum dolor sit amet...",
     id: uuid(),
     createdAt: Date.now(),
-  });
-  const newIdeaTwo = createIdeaObject({
+  };
+  const newIdeaTwo: TIdea = {
     title: "Say Hello World!",
     description: "Lorem ipsum dolor sit amet...",
     id: uuid(),
     createdAt: Date.now() + 1000 * 60 * 60,
-  });
+  };
 
   const initialStateWithAFewIdeas = {
     ...initialState,

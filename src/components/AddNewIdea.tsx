@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { IdeaForm } from ".";
+import { IdeaForm, TIdea } from ".";
 import { useGlobalState, EActionTypes } from "../state";
-import { createIdeaObject, uuid } from "../utils";
+import { uuid } from "../utils";
 
 const AddNewIdea = () => {
   const [showForm, setShowForm] = useState(false);
@@ -14,12 +14,12 @@ const AddNewIdea = () => {
     description: string;
     title: string;
   }) => {
-    const newIdea = createIdeaObject({
+    const newIdea: TIdea = {
       title,
       description,
       id: uuid(),
       createdAt: Date.now(),
-    });
+    };
 
     dispatch({
       type: EActionTypes.ADD_IDEA,
