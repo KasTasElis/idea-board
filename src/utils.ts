@@ -2,21 +2,16 @@ import { TIdea } from "./components";
 import { ESortingOptions } from "./state";
 
 export const sortIdeas = (ideas: TIdea[], typeOfSort: ESortingOptions) => {
-  if (
-    typeOfSort === ESortingOptions.A_Z ||
-    typeOfSort === ESortingOptions.Z_A
-  ) {
-    return sortIdeasAlphabeticallyByTitle(ideas, typeOfSort);
+  switch (typeOfSort) {
+    case ESortingOptions.A_Z:
+    case ESortingOptions.Z_A:
+      return sortIdeasAlphabeticallyByTitle(ideas, typeOfSort);
+    case ESortingOptions.BY_DATE_ASCENDING:
+    case ESortingOptions.BY_DATE_DESCENDING:
+      return sortIdeasByDate(ideas, typeOfSort);
+    default:
+      return ideas;
   }
-
-  if (
-    typeOfSort === ESortingOptions.BY_DATE_ASCENDING ||
-    typeOfSort === ESortingOptions.BY_DATE_DESCENDING
-  ) {
-    return sortIdeasByDate(ideas, typeOfSort);
-  }
-
-  return ideas;
 };
 
 export const sortIdeasAlphabeticallyByTitle = (
