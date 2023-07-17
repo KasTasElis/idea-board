@@ -1,6 +1,24 @@
 import { TIdea } from "./components";
 import { ESortingOptions, TNotification } from "./state";
 
+export const sortIdeas = (ideas: TIdea[], typeOfSort: ESortingOptions) => {
+  if (
+    typeOfSort === ESortingOptions.A_Z ||
+    typeOfSort === ESortingOptions.Z_A
+  ) {
+    return sortIdeasAlphabeticallyByTitle(ideas, typeOfSort);
+  }
+
+  if (
+    typeOfSort === ESortingOptions.BY_DATE_ASCENDING ||
+    typeOfSort === ESortingOptions.BY_DATE_DESCENDING
+  ) {
+    return sortIdeasByDate(ideas, typeOfSort);
+  }
+
+  return ideas;
+};
+
 export const sortIdeasAlphabeticallyByTitle = (
   ideas: TIdea[],
   sortOrder: ESortingOptions.A_Z | ESortingOptions.Z_A
