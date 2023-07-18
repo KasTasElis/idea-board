@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "./react-testing-lib/test-utils";
 
 import App from "./App";
 
@@ -7,7 +7,5 @@ describe("App", () => {
     render(<App />);
 
     screen.debug();
-
-    // check if App components renders headline
   });
 });

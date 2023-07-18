@@ -12,7 +12,7 @@ export default defineConfig(({ command }) => {
       },
       environment: "jsdom",
       globals: true,
-      setupFiles: "./react-testing-lib/setup.ts",
+      setupFiles: "./src/react-testing-lib/setup.ts",
     },
   };
 
