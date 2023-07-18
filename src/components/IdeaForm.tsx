@@ -61,12 +61,17 @@ const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, onSubmit, idea }) => {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <div className="flex items-center justify-between">
-            <label htmlFor="" className="font-medium text-slate-700 block mb-1">
+            <label
+              htmlFor="title"
+              className="font-medium text-slate-700 block mb-1"
+            >
               💡 Title
             </label>
             <div className="text-xs text-right mt-1 text-slate-500">{`${title.length}/${titleMaxLength}`}</div>
           </div>
           <input
+            id="title"
+            name="title"
             autoFocus
             className="w-full p-3 rounded-md"
             type="text"
@@ -81,12 +86,17 @@ const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, onSubmit, idea }) => {
 
         <div className="mb-5">
           <div className="flex items-center justify-between">
-            <label htmlFor="" className="font-medium text-slate-700 block mb-1">
+            <label
+              htmlFor="description"
+              className="font-medium text-slate-700 block mb-1"
+            >
               ✍️ Description
             </label>
             <div className="text-xs text-right mt-1 text-slate-500">{`${description.length}/${descriptionMaxLength}`}</div>
           </div>
           <textarea
+            name="description"
+            id="description"
             maxLength={descriptionMaxLength}
             minLength={descriptionMinLength}
             className="w-full p-3 rounded-md resize-none"
