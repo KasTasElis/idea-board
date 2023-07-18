@@ -10,6 +10,9 @@ export default defineConfig(({ command }) => {
       coverage: {
         provider: "istanbul",
       },
+      environment: "jsdom",
+      globals: true,
+      setupFiles: "./react-testing-lib/setup.ts",
     },
   };
 
