@@ -3,8 +3,8 @@ import { Card } from ".";
 import { TIdea } from "./IdeaCard";
 
 interface IdeaFormProps {
-  onCancel: () => void;
-  onSubmit: ({
+  onCancel?: () => void;
+  onSubmit?: ({
     title,
     description,
   }: {
@@ -14,9 +14,9 @@ interface IdeaFormProps {
   idea?: TIdea;
 }
 
-const titleMaxLength = 60;
+export const titleMaxLength = 60;
 const titleMinLength = 3;
-const descriptionMaxLength = 160;
+export const descriptionMaxLength = 160;
 const descriptionMinLength = 3;
 
 const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, onSubmit, idea }) => {
@@ -33,7 +33,9 @@ const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, onSubmit, idea }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    onSubmit({ title, description });
+    if (onSubmit) {
+      onSubmit({ title, description });
+    }
   };
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +60,7 @@ const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, onSubmit, idea }) => {
 
   return (
     <Card>
-      <form onSubmit={handleSubmit}>
+      <form role="form" onSubmit={handleSubmit}>
         <div className="mb-4">
           <div className="flex items-center justify-between">
             <label
@@ -70,6 +72,8 @@ const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, onSubmit, idea }) => {
             <div className="text-xs text-right mt-1 text-slate-500">{`${title.length}/${titleMaxLength}`}</div>
           </div>
           <input
+            role=""
+            spellCheck
             id="title"
             name="title"
             autoFocus
@@ -97,6 +101,7 @@ const IdeaForm: React.FC<IdeaFormProps> = ({ onCancel, onSubmit, idea }) => {
           <textarea
             name="description"
             id="description"
+            spellCheck
             maxLength={descriptionMaxLength}
             minLength={descriptionMinLength}
             className="w-full p-3 rounded-md resize-none"
