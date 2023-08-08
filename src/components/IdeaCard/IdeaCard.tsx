@@ -1,12 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
-import { IdeaForm, Card } from ".";
-import { useGlobalState, EActionTypes, TNotification } from "../state";
+import { IdeaForm, Card } from "..";
+import { useGlobalState, EActionTypes, TNotification } from "../../state";
 import {
   createUpdatedIdeaObject,
   getFormattedIdeaDateString,
   uuid,
-} from "../utils";
+} from "../../utils";
 
 type TIdea = {
   title: string;
@@ -96,12 +96,14 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
 
         <div className="flex gap-3">
           <button
+            role="button"
             onClick={() => setIsEditing(true)}
             className="px-4 py-2 bg-slate-500 rounded-md text-white text-sm font-medium"
           >
             Edit
           </button>
           <button
+            role="button"
             onClick={onDelete}
             className="px-4 py-2 bg-red-500 rounded-md text-white text-sm font-medium"
           >

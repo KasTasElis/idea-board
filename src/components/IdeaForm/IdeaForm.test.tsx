@@ -3,11 +3,11 @@ import { IdeaForm, titleMaxLength, descriptionMaxLength } from "./IdeaForm";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
-import { TIdea } from ".";
+import { TIdea } from "..";
 
 const user = userEvent.setup();
 
-it("has title focused on load", async () => {
+test("has title focused on load", async () => {
   render(<IdeaForm />);
 
   const titleInput = screen.getByPlaceholderText(
@@ -25,7 +25,7 @@ it("has title focused on load", async () => {
   expect(descInput).toHaveFocus();
 });
 
-it("title shows correct character countdown", async () => {
+test("title shows correct character countdown", async () => {
   render(<IdeaForm />);
 
   const initialCountText = `0/${titleMaxLength}`;
@@ -47,7 +47,7 @@ it("title shows correct character countdown", async () => {
   expect(characterCountDiv.innerHTML).toBe(`${title.length}/${titleMaxLength}`);
 });
 
-it("description shows correct character countdown", async () => {
+test("description shows correct character countdown", async () => {
   render(<IdeaForm />);
 
   const initialCountText = `0/${descriptionMaxLength}`;
@@ -71,71 +71,72 @@ it("description shows correct character countdown", async () => {
   );
 });
 
-// come back to this
-it.skip("cant be submitted with empty or invalid title or description", async () => {
+// TODO: Discuss this one 🙏
+test.skip("cant be submitted with empty or invalid title or description", async () => {
   const onSubmit = vi.fn();
 
   render(<IdeaForm onSubmit={onSubmit} />);
 
   // get the form
-  const form = screen.getByRole("form");
-  const titleInput = screen.getByPlaceholderText(
-    /Enter Title/i
-  ) as HTMLInputElement;
+  //const form = screen.getByRole("form");
+  // const titleInput = screen.getByPlaceholderText(
+  //   /Enter Title/i
+  // ) as HTMLInputElement;
 
-  const descInput = screen.getByPlaceholderText(
-    /Enter Description/i
-  ) as HTMLInputElement;
+  // const descInput = screen.getByPlaceholderText(
+  //   /Enter Description/i
+  // ) as HTMLInputElement;
 
   const submitBtn = screen.getByRole("button", { name: /Submit/i });
 
   // try empty form submit
   await user.click(submitBtn);
-  expect(titleInput).toBeInvalid();
+  expect(screen.queryByRole("form")).toBeInvalid();
   expect(onSubmit).not.toBeCalled();
 
   // try under minimum title length submit
-  await user.type(titleInput, "a");
+  await user.type(screen.getByPlaceholderText(/Enter Title/i), "a");
   await user.click(submitBtn);
 
   // check if title is still invalid and submit is not called
-  expect(form).toBeInvalid();
-  //expect(titleInput).toBeInvalid(); // why is this not working?
+  expect(screen.queryByRole("form")).toBeInvalid();
+  //expect(screen.getByPlaceholderText(/Enter Title/i)).toBeInvalid(); // why is this not working?
   expect(onSubmit).not.toBeCalled();
 
   // enter valid title
-  await user.clear(titleInput);
-  await user.type(titleInput, "Title!");
+  await user.clear(screen.getByPlaceholderText(/Enter Title/i));
+  await user.type(screen.getByPlaceholderText(/Enter Title/i), "Title!");
   await user.click(submitBtn);
-  expect(titleInput).toBeValid();
+  expect(screen.getByPlaceholderText(/Enter Title/i)).toBeValid();
+  expect(screen.queryByRole("form")).toBeInvalid(); // wtf???!
+  expect(onSubmit).not.toBeCalled(); // ???? this should be failing?
 
   // desc should sitll be invalid
-  expect(descInput).toBeInvalid();
-  expect(onSubmit).not.toBeCalled();
-  expect(form).toBeInvalid();
+  expect(screen.getByPlaceholderText(/Enter Description/i)).toBeInvalid();
+  expect(screen.queryByRole("form")).toBeInvalid(); // lol?
 
   // try under minimum description length submit
-  await user.type(descInput, "D");
+  await user.type(screen.getByPlaceholderText(/Enter Description/i), "D");
   await user.click(submitBtn);
 
-  expect(titleInput).toBeValid();
-  //expect(descInput).toBeInvalid(); // why is this not working?
-  //expect(form).toBeInvalid(); // why is it not working?
-  expect(onSubmit).not.toBeCalled();
+  expect(screen.getByPlaceholderText(/Enter Title/i)).toBeValid();
+  // expect(screen.getByPlaceholderText(/Enter Description/i)).toBeInvalid(); // why is this not working?
+  // expect(screen.queryByRole("form")).toBeInvalid(); // why is it not working?
+  // expect(onSubmit).not.toBeCalled(); // ????
 
   // attempt valid submission
-  await user.clear(descInput);
-  await user.type(descInput, "Description!");
-  await user.click(submitBtn);
+  // await user.clear(descInput);
+  // await user.type(descInput, "Description!");
+  // await user.click(submitBtn);
 
-  // submission goes trough
-  expect(titleInput).toBeValid();
-  expect(descInput).toBeValid();
-  expect(form).toBeValid();
-  expect(onSubmit).toBeCalledTimes(1);
+  // // submission goes trough
+  // expect(titleInput).toBeValid();
+  // expect(descInput).toBeValid();
+  // expect(form).toBeValid();
+  // expect(onSubmit).toBeCalledTimes(1);
 });
 
-it("fields get pre-filled if idea is passed via params", () => {
+test("fields get pre-filled if idea is passed via params", () => {
   const idea: TIdea = {
     title: "Hello Title",
     description: "Hello Description...",

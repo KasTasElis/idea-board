@@ -1,5 +1,5 @@
-import { mockIdeas } from "../consts";
-import { useGlobalState, EActionTypes } from "../state";
+import { mockIdeas } from "../../consts";
+import { useGlobalState, EActionTypes } from "../../state";
 
 interface DevToolProps {
   message: string;
@@ -60,4 +60,4 @@ const DevTools = () => {
   );
 };
 
-export { DevTools };
+export { DevTools, DevTool };

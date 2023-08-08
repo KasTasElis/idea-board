@@ -1,4 +1,4 @@
-import { TNotification, useGlobalState, EActionTypes } from "../state";
+import { TNotification, useGlobalState, EActionTypes } from "../../state";
 
 type TNotificationCardProps = {
   notification: TNotification;
@@ -27,7 +27,10 @@ const Notifications = () => {
   const { state } = useGlobalState();
 
   return (
-    <div className="fixed top-5 right-5 flex flex-col gap-3 z-10">
+    <div
+      className="fixed top-5 right-5 flex flex-col gap-3 z-10"
+      data-testid="notification-wrapper"
+    >
       {state.notifications.map((notification) => (
         <NotificationCard key={notification.id} notification={notification} />
       ))}

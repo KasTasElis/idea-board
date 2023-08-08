@@ -1,5 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import classNames from "classnames";
-import { useGlobalState, ESortingOptions, EActionTypes } from "../state";
+import { useGlobalState, ESortingOptions, EActionTypes } from "../../state";
 
 type SortButtonProps = {
   text: string;
@@ -7,10 +8,13 @@ type SortButtonProps = {
   onClick?: () => void;
 };
 
+export const activeCssClasses = "bg-slate-500 text-white";
+export const inactiveCssClasses = "bg-slate-200 text-slate-400";
+
 const SortButton = ({ text, isActive = false, onClick }: SortButtonProps) => {
   const buttonClasses = classNames("px-4 py-1 rounded-md text-sm font-medium", {
-    "bg-slate-500 text-white": isActive,
-    "bg-slate-200 text-slate-400": !isActive,
+    [activeCssClasses]: isActive,
+    [inactiveCssClasses]: !isActive,
   });
 
   return (

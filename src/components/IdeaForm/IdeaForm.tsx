@@ -1,6 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
-import { Card } from ".";
-import { TIdea } from "./IdeaCard";
+import { Card } from "..";
+import { TIdea } from "../IdeaCard/IdeaCard";
 
 interface IdeaFormProps {
   onCancel?: () => void;
