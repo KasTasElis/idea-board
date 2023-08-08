@@ -2,18 +2,13 @@ import { TNotification, useGlobalState, EActionTypes } from "../../state";
 
 type TNotificationCardProps = {
   notification: TNotification;
+  onDelete: () => void;
 };
 
-const NotificationCard = ({ notification }: TNotificationCardProps) => {
-  const { dispatch } = useGlobalState();
-
-  const onDelete = () => {
-    dispatch({
-      type: EActionTypes.DELETE_NOTIFICATION,
-      payload: notification,
-    });
-  };
-
+const NotificationCard = ({
+  notification,
+  onDelete,
+}: TNotificationCardProps) => {
   return (
     <div className="shadow-md p-4 rounded text-md gap-2 text-slate-100 bg-green-400 w-80 flex justify-between">
       <p>{notification.message}</p>
@@ -24,7 +19,14 @@ const NotificationCard = ({ notification }: TNotificationCardProps) => {
 };
 
 const Notifications = () => {
-  const { state } = useGlobalState();
+  const { state, dispatch } = useGlobalState();
+
+  const onDelete = (notification: TNotification) => {
+    dispatch({
+      type: EActionTypes.DELETE_NOTIFICATION,
+      payload: notification,
+    });
+  };
 
   return (
     <div
@@ -32,7 +34,11 @@ const Notifications = () => {
       data-testid="notification-wrapper"
     >
       {state.notifications.map((notification) => (
-        <NotificationCard key={notification.id} notification={notification} />
+        <NotificationCard
+          key={notification.id}
+          notification={notification}
+          onDelete={() => onDelete(notification)}
+        />
       ))}
     </div>
   );
