@@ -25,9 +25,9 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
 
   const dateString = getFormattedIdeaDateString(idea);
 
-  const onDelete = () => {
+  const onDelete = (idea: TIdea) => {
     const confirm = window.confirm(
-      "Are you sure you want to deltete this idea?"
+      "Are you sure you want to delete this idea?"
     );
 
     if (!confirm) return;
@@ -104,7 +104,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
           </button>
           <button
             role="button"
-            onClick={onDelete}
+            onClick={() => onDelete(idea)}
             className="px-4 py-2 bg-red-500 rounded-md text-white text-sm font-medium"
           >
             Delete
