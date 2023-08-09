@@ -45,13 +45,13 @@ const App = () => {
               <SortOptions />
             </div>
 
-            <div id="idea-container">
+            <ul>
               {ideas.map((idea) => (
-                <div className="mb-5" key={idea.id}>
+                <li className="mb-5" key={idea.id}>
                   <IdeaCard idea={idea} />
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </>
         ) : null}
       </div>

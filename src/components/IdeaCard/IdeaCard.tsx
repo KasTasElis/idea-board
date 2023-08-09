@@ -19,6 +19,8 @@ interface IdeaCardProps {
   idea: TIdea;
 }
 
+export const notificationTimeoutDuration = 1500;
+
 const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
   const { dispatch } = useGlobalState();
   const [isEditing, setIsEditing] = useState(false);
@@ -71,7 +73,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
         type: EActionTypes.DELETE_NOTIFICATION,
         payload: notification,
       });
-    }, 3000);
+    }, notificationTimeoutDuration);
 
     setIsEditing(false);
   };
