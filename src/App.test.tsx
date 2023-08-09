@@ -1,4 +1,4 @@
-import { render, screen } from "./react-testing-lib/test-utils";
+import { render, screen, within } from "./react-testing-lib/test-utils";
 import userEvent from "@testing-library/user-event";
 
 const user = userEvent.setup();
@@ -206,9 +206,68 @@ test("can 'hydrate' and 'teardown' app state", async () => {
 });
 
 describe("can sort ideas", () => {
-  test.todo("old ideas first");
-  test.todo("alphabetically A-Z");
-  test.todo("alphabetically Z-A");
+  test("by date", async () => {
+    render(<App />);
+
+    const hydrateBtn = screen.getByRole("button", { name: /Hydrate/i });
+    await user.click(hydrateBtn);
+
+    const ideas = screen.queryAllByRole("listitem");
+
+    const firstIdeaTitle = within(ideas[0]).getByRole("heading").innerHTML;
+    const lastIdeaTitle = within(ideas[3]).getByRole("heading").innerHTML;
+
+    expect(firstIdeaTitle).toBe(mockIdeas[3].title);
+    expect(lastIdeaTitle).toBe(mockIdeas[0].title);
+
+    const sortByOldestBtn = screen.getByRole("button", { name: /Oldest/i });
+    await user.click(sortByOldestBtn);
+
+    const ideasAfterSort = screen.queryAllByRole("listitem");
+
+    const firstIdeaTitleAfterSort = within(ideasAfterSort[0]).getByRole(
+      "heading"
+    ).innerHTML;
+    const lastIdeaTitleAfterSort = within(ideasAfterSort[3]).getByRole(
+      "heading"
+    ).innerHTML;
+
+    expect(firstIdeaTitleAfterSort).toBe(mockIdeas[0].title);
+    expect(lastIdeaTitleAfterSort).toBe(mockIdeas[3].title);
+  });
+
+  test("alphabetically", async () => {
+    render(<App />);
+
+    const hydrateBtn = screen.getByRole("button", { name: /Hydrate/i });
+    await user.click(hydrateBtn);
+
+    const sortAtoZ = screen.getByRole("button", { name: /A-Z/i });
+    await user.click(sortAtoZ);
+
+    const ideas = screen.queryAllByRole("listitem");
+
+    const firstIdeaTitle = within(ideas[0]).getByRole("heading").innerHTML;
+    const lastIdeaTitle = within(ideas[3]).getByRole("heading").innerHTML;
+
+    expect(firstIdeaTitle).toBe(mockIdeas[1].title);
+    expect(lastIdeaTitle).toBe(mockIdeas[0].title);
+
+    const sortZtoA = screen.getByRole("button", { name: /Z-A/i });
+    await user.click(sortZtoA);
+
+    const ideasAfterSort = screen.queryAllByRole("listitem");
+
+    const firstIdeaTitleAfterSort = within(ideasAfterSort[0]).getByRole(
+      "heading"
+    ).innerHTML;
+    const lastIdeaTitleAfterSort = within(ideasAfterSort[3]).getByRole(
+      "heading"
+    ).innerHTML;
+
+    expect(firstIdeaTitleAfterSort).toBe(mockIdeas[0].title);
+    expect(lastIdeaTitleAfterSort).toBe(mockIdeas[1].title);
+  });
 });
 
 test.todo("notifications will dismiss themselves");

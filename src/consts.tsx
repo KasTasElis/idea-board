@@ -19,14 +19,14 @@ const mockIdeas: TIdea[] = [
     id: uuid(),
     title: "Consectetur Adipiscing",
     description: "Quo suscipit numquam esse temporibus cupiditate cum quod.",
-    createdAt: Date.now() + 20000,
-    updatedAt: Date.now() + 50000,
+    createdAt: Date.now() + 10000 * 20,
+    updatedAt: Date.now() + 10000 * 50,
   },
   {
     id: uuid(),
     title: "Architecto error ullam!",
     description: "Placeat nesciunt aliquid ducimus, consequuntur consequatur.",
-    createdAt: Date.now() + 30000,
+    createdAt: Date.now() + 10000 * 60,
   },
 ];
 
