@@ -6,6 +6,8 @@ const user = userEvent.setup();
 import App from "./App";
 import { vitest } from "vitest";
 import { mockIdeas } from "./consts";
+import { activeCssClasses } from "./components/SortOptions";
+import { ESortingOptions } from "./state";
 
 test("can add a new idea with title, description and created at date", async () => {
   render(<App />);
@@ -18,6 +20,15 @@ test("can add a new idea with title, description and created at date", async () 
 
   const form = screen.getByRole("form");
   expect(form).toBeVisible();
+
+  const cancelBtn = screen.getByRole("button", { name: /Cancel/i });
+  await user.click(cancelBtn);
+
+  const formAfterCancel = screen.queryByRole("form");
+  expect(formAfterCancel).not.toBeInTheDocument();
+
+  const addIdeaBtn2 = screen.getByRole("button", { name: /Add New Idea/i });
+  await user.click(addIdeaBtn2);
 
   const titleInput = screen.getByPlaceholderText(/Enter Title/i);
   expect(titleInput).toHaveFocus();
@@ -213,15 +224,26 @@ describe("can sort ideas", () => {
     await user.click(hydrateBtn);
 
     const ideas = screen.queryAllByRole("listitem");
+    expect(ideas.length).toBe(mockIdeas.length);
 
+    // by newest by default
     const firstIdeaTitle = within(ideas[0]).getByRole("heading").innerHTML;
     const lastIdeaTitle = within(ideas[3]).getByRole("heading").innerHTML;
 
     expect(firstIdeaTitle).toBe(mockIdeas[3].title);
     expect(lastIdeaTitle).toBe(mockIdeas[0].title);
 
-    const sortByOldestBtn = screen.getByRole("button", { name: /Oldest/i });
+    const byNewestBtn = screen.getByRole("button", {
+      name: ESortingOptions.BY_DATE_DESCENDING,
+    });
+    expect(byNewestBtn).toHaveClass(activeCssClasses);
+
+    const sortByOldestBtn = screen.getByRole("button", {
+      name: ESortingOptions.BY_DATE_ASCENDING,
+    });
     await user.click(sortByOldestBtn);
+    expect(sortByOldestBtn).toHaveClass(activeCssClasses);
+    expect(byNewestBtn).not.toHaveClass(activeCssClasses);
 
     const ideasAfterSort = screen.queryAllByRole("listitem");
 
@@ -269,6 +291,3 @@ describe("can sort ideas", () => {
     expect(lastIdeaTitleAfterSort).toBe(mockIdeas[1].title);
   });
 });
-
-test.todo("notifications will dismiss themselves");
-test.todo("on window reload, state persists");

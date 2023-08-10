@@ -5,6 +5,7 @@ import { vitest } from "vitest";
 
 const user = userEvent.setup();
 
+// come back to this test...
 test.skip("can't submit idea form with invalid data", async () => {
   const onSubmit = vitest.fn();
 
