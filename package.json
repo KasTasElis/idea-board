@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "test:unit": "vitest",
-    "test:unit:coverage": "vitest run --coverage",
-    "test:e2e": "cypress run",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
     "build": "tsc && vite build"
   },
   "dependencies": {
@@ -26,7 +25,6 @@
     "@vitejs/plugin-react": "^4.0.0",
     "@vitest/coverage-istanbul": "^0.32.4",
     "autoprefixer": "^10.4.14",
-    "cypress": "^12.16.0",
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
